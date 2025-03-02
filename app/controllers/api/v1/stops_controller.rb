@@ -9,7 +9,7 @@ module Api
       def show
         stops = ExternalApiService.get_stops
         stop = stops[params[:id]
-        render json: stop
+        render(json: stop)
       end
       
       def by_route
