@@ -7,8 +7,7 @@ module Api
       end
       
       def show
-        stops = ExternalApiService.get_stops
-        stop = stops[params[:id]
+        stop = ExternalApiService.get_stop(params[:id])
         render json: stop
       end
       
@@ -18,4 +17,5 @@ module Api
       end
     end
   end
-endstops_controller.rb
+end
+
