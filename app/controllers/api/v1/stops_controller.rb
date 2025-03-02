@@ -8,7 +8,7 @@ module Api
       
       def show
         stops = ExternalApiService.get_stops
-        stop = stops[params[:id]]
+        stop = stops[params[:id]
         render json: stop
       end
       
