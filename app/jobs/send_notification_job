@@ -1,0 +1,13 @@
+class SendNotificationJob < ApplicationJob
+  queue_as :default
+  
+  def perform(message_id)
+    message = Message.find_by(id: message_id)
+    return unless message && !message.expired?
+    
+    message.send_push_notification
+  rescue => e
+    Rails.logger.error "[SendNotificationJob] Error sending notification for message ##{message_id}: #{e.message}"
+    raise # Re-raise to trigger job retry
+  end
+end
