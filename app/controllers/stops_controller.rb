@@ -6,7 +6,6 @@ class StopsController < ApplicationController
 
   def show
     @stop_id = params[:id] # Fixed param syntax
-    @stops = ExternalApiService.get_stops
-    @stop = @stops[@stop_id]
+    @stop = ExternalApiService.get_stop(@stop_id)
   end
 end
