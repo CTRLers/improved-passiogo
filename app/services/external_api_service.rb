@@ -1,15 +1,54 @@
-require 'httparty'
+# app/services/external_api_service.rb
+require 'net/http'
+require 'json'
 
 class ExternalApiService
-  include HTTParty
-  base_uri 'http://127.0.0.1:8000' # Ensure this matches your API server
+  BASE_URL = "http://localhost:8000" # Change this to the actual URL where FastAPI is running
 
   def self.get_routes
-    response = get('/routes') # Adjust the endpoint if needed
-    if response.success?
-      data = response.parsed_response
-      data.values # Extracts route objects (removing ID keys)
+    uri = URI("#{BASE_URL}/routes")
+    response = Net::HTTP.get_response(uri)
+    
+    if response.is_a?(Net::HTTPSuccess)
+      JSON.parse(response.body)
     else
+      Rails.logger.error("Failed to fetch routes: #{response.message}")
+      []
+    end
+  end
+  
+  def self.get_route(route_id)
+    uri = URI("#{BASE_URL}/routes/#{route_id}")
+    response = Net::HTTP.get_response(uri)
+    
+    if response.is_a?(Net::HTTPSuccess)
+      JSON.parse(response.body)
+    else
+      Rails.logger.error("Failed to fetch route #{route_id}: #{response.message}")
+      nil
+    end
+  end
+  
+  def self.get_stops
+    uri = URI("#{BASE_URL}/stops")
+    response = Net::HTTP.get_response(uri)
+    
+    if response.is_a?(Net::HTTPSuccess)
+      JSON.parse(response.body)
+    else
+      Rails.logger.error("Failed to fetch stops: #{response.message}")
+      []
+    end
+  end
+  
+  def self.get_route_stops(route_id)
+    uri = URI("#{BASE_URL}/routes/#{route_id}/stops")
+    response = Net::HTTP.get_response(uri)
+    
+    if response.is_a?(Net::HTTPSuccess)
+      JSON.parse(response.body)
+    else
+      Rails.logger.error("Failed to fetch stops for route #{route_id}: #{response.message}")
       []
     end
   end
