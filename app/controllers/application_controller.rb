@@ -1,4 +1,10 @@
-class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
+class RoutesController < ApplicationController
+  def index
+    @routes = ExternalApiService.get_routes
+  end
+  
+  def show
+    @route = ExternalApiService.get_route(params[:id])
+    @stops = ExternalApiService.get_route_stops(params[:id])
+  end
 end
