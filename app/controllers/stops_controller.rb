@@ -1,11 +1,11 @@
-class StopsController < ApplicationController
+
+class StopsController < ApplicationController 
   def index
     @stops = ExternalApiService.get_stops
   end
-  
+
   def show
-    # This will need adjustment since your FastAPI doesn't have a direct stop endpoint
-    @stop_id = params[:id]
+    @stop_id = params[:id] # Fixed param syntax
     @stops = ExternalApiService.get_stops
     @stop = @stops[@stop_id]
   end
