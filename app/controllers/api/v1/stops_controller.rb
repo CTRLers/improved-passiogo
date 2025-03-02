@@ -14,7 +14,7 @@ module Api
       
       def by_route
         stops = ExternalApiService.get_route_stops(params[:route_id])
-        render json: stops
+        render (json: stops)
       end
     end
    end
