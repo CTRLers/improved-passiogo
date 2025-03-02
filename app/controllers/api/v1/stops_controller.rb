@@ -17,5 +17,5 @@ module Api
         render json: stops
       end
     end
+   end
   end
-endstops_controller.rb
