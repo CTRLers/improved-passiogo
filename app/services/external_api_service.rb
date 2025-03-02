@@ -23,7 +23,8 @@ class ExternalApiService
     response = Net::HTTP.get_response(uri)
 
     if response.is_a?(Net::HTTPSuccess)
-      JSON.parse(response.body)
+      data = JSON.parse(response.body)
+      data
     else
       Rails.logger.error("Failed to fetch route #{route_id}: #{response.message}")
       nil
@@ -33,11 +34,24 @@ class ExternalApiService
   def self.get_stops
     uri = URI("#{BASE_URL}/stops")
     response = Net::HTTP.get_response(uri)
-
     if response.is_a?(Net::HTTPSuccess)
-      JSON.parse(response.body)
+      data = JSON.parse(response.body)
+      data.values
     else
       Rails.logger.error("Failed to fetch stops: #{response.message}")
+      []
+    end
+  end
+
+  def self.get_stop(stop_id)
+    uri = URI("#{BASE_URL}/stops/#{stop_id}")
+    response = Net::HTTP.get_response(uri)
+
+    if response.is_a?(Net::HTTPSuccess)
+      data = JSON.parse(response.body)
+      data
+    else
+      Rails.logger.error("Failed to fetch routes: #{response.message}")
       []
     end
   end
