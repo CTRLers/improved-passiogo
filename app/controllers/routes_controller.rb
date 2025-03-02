@@ -1,4 +1,4 @@
-odule Api
+module Api
   module V1
     class RoutesController < ApplicationController
       def index
