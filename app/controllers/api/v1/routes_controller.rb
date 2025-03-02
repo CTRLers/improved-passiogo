@@ -7,8 +7,10 @@ module Api
       end
       
       def show
-        route = ExternalApiService.get_route(params[:id])
-        render json: route
+        stops = ExternalApiService.get_stops()
+        id = params[:id]
+        stop = stops[id]
+        render(json: stop)
       end
     end
   end
