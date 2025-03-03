@@ -1,0 +1,2 @@
+module StopSubscriptionsHelper
+end
