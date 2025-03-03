@@ -2,6 +2,7 @@
 
 <ul>
   <% @routes.each do |route| %>
-    <li><strong><%= route['name'] %></strong> - Lat: <%= route['latitude'] %>, Long: <%= route['longitude'] %></li>
+    <li><strong><%= route['name'] %></strong>
+      located at: Lat: <%= route['latitude'] %>, Long: <%= route['longitude'] %></li>
   <% end %>
 </ul>
