@@ -5,7 +5,6 @@ module Api
         routes = ExternalApiService.get_routes
         render json: routes
       end
-
       def show
         stops = ExternalApiService.get_stops()
         id = params[:id]
