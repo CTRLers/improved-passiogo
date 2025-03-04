@@ -1,6 +1,7 @@
 <h1>Stops</h1>
 
 <ul>
+  # This is my stops view
   <% @stops.each do |stop| %>
     <li><strong><%= stop['name'] %></strong> - Lat: <%= stop['latitude'] %>, Long: <%= stop['longitude'] %></li>
   <% end %>
