@@ -1,4 +1,5 @@
-# app/services/external_api_service.rb # internal api
+# app/services/external_api_service.rb 
+# internal api
 require "net/http"
 require "json"
 

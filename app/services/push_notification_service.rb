@@ -1,4 +1,4 @@
-#Push Notiffication
+#Notiffication
 class PushNotificationService
   include Singleton
   
