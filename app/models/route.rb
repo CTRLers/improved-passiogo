@@ -1,6 +1,6 @@
 class Route < ApplicationRecord
   has_many :stops, dependent: :destroy
 
-  validates :name, presence: true
-  validates :lat, :long, presence: true, numericality: true
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :latitude, :longitude, presence: true, numericality: true
 end

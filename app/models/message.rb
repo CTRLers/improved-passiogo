@@ -4,7 +4,7 @@ class Message < ApplicationRecord
   belongs_to :stop, optional: true
 
   # Message types
-  enum message_type: { delay: 0, service_change: 1, route_detour: 2, general_announcement: 3 }
+  # enum message_type: { delay: 0, service_change: 1, route_detour: 2, general_announcement: 3 }
 
   # Severity levels
   enum severity: { info: 0, warning: 1, critical: 2 }
