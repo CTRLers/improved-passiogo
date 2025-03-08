@@ -1,5 +1,5 @@
 
-class StopsController < ApplicationController 
+class StopsController < ApplicationController
   def index
     @stops = ExternalApiService.get_stops
   end

@@ -1,6 +1,6 @@
 # app/services/external_api_service.rb
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 class ExternalApiService
   BASE_URL = "http://localhost:8000" # Change this to the actual URL where FastAPI is running
