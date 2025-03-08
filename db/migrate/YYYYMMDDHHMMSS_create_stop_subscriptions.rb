@@ -1,3 +1,4 @@
+#
 class CreateStopSubscriptions < ActiveRecord::Migration[8.0]
   def change
     create_table :stop_subscriptions do |t|

@@ -1,3 +1,4 @@
+#
 class CreateRouteSubscriptions < ActiveRecord::Migration[8.0]
   def change
     create_table :route_subscriptions do |t|
