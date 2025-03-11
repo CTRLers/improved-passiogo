@@ -1,0 +1,76 @@
+-- Creating Users table
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Creating Buses table
+CREATE TABLE Buses (
+    bus_id INT PRIMARY KEY AUTO_INCREMENT,
+    bus_number VARCHAR(50) NOT NULL,
+    capacity INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Creating Routes table
+CREATE TABLE Routes (
+    route_id INT PRIMARY KEY AUTO_INCREMENT,
+    route_name VARCHAR(255) NOT NULL,
+    start_location VARCHAR(255),
+    end_location VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Creating Stops table
+CREATE TABLE Stops (
+    stop_id INT PRIMARY KEY AUTO_INCREMENT,
+    stop_name VARCHAR(255) NOT NULL,
+    location VARCHAR(255),
+    route_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (route_id) REFERENCES Routes(route_id)
+);
+
+-- Creating Schedules table
+CREATE TABLE Schedules (
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    route_id INT,
+    bus_id INT,
+    departure_time TIME,
+    arrival_time TIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (route_id) REFERENCES Routes(route_id),
+    FOREIGN KEY (bus_id) REFERENCES Buses(bus_id)
+);
+
+-- Creating LiveTracking table
+CREATE TABLE LiveTracking (
+    tracking_id INT PRIMARY KEY AUTO_INCREMENT,
+    bus_id INT,
+    location VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bus_id) REFERENCES Buses(bus_id)
+);
+
+-- Creating Notifications table
+CREATE TABLE Notifications (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    message TEXT,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- Creating UserPreferences table
+CREATE TABLE UserPreferences (
+    preference_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    preference_name VARCHAR(255),
+    preference_value VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
