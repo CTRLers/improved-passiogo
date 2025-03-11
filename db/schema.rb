@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_02_222206) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_08_140432) do
   create_table "route_subscriptions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "route_id", null: false
@@ -27,6 +27,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_222206) do
     t.decimal "longitude", precision: 10, scale: 6, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "lat"
+    t.float "long"
+    t.index ["name"], name: "index_routes_on_name", unique: true
   end
 
   create_table "stop_subscriptions", force: :cascade do |t|
@@ -46,6 +49,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_222206) do
     t.integer "route_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "lat"
+    t.float "long"
     t.index ["route_id"], name: "index_stops_on_route_id"
   end
 
