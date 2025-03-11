@@ -1,0 +1,48 @@
+-- Setting Primary Keys for All Tables (already done in the table creation above)
+
+-- Ensuring Foreign Key Relationships:
+-- Users table (already defined in Issue 1)
+-- Buses table (already defined in Issue 1)
+-- Routes table (already defined in Issue 1)
+-- Stops table: foreign key relationship to Routes table (already defined in Issue 1)
+-- Schedules table: foreign key relationships to Routes and Buses tables (already defined in Issue 1)
+-- LiveTracking table: foreign key relationship to Buses table (already defined in Issue 1)
+-- Notifications table: foreign key relationship to Users table (already defined in Issue 1)
+-- UserPreferences table: foreign key relationship to Users table (already defined in Issue 1)
+
+-- Additional Constraints:
+-- Ensuring email uniqueness for the Users table
+ALTER TABLE Users
+    ADD CONSTRAINT unique_email UNIQUE (email);
+
+-- Ensuring bus_number uniqueness in the Buses table
+ALTER TABLE Buses
+    ADD CONSTRAINT unique_bus_number UNIQUE (bus_number);
+
+-- Ensuring non-null constraints on important fields
+ALTER TABLE Users
+    MODIFY COLUMN username VARCHAR(255) NOT NULL;
+
+ALTER TABLE Users
+    MODIFY COLUMN email VARCHAR(255) NOT NULL;
+
+ALTER TABLE Schedules
+    MODIFY COLUMN departure_time TIME NOT NULL,
+    MODIFY COLUMN arrival_time TIME NOT NULL;
+
+-- Implementing cascading delete/update on foreign key constraints
+ALTER TABLE Stops
+    ADD CONSTRAINT fk_route_id FOREIGN KEY (route_id) REFERENCES Routes(route_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Schedules
+    ADD CONSTRAINT fk_route_id_schedule FOREIGN KEY (route_id) REFERENCES Routes(route_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    ADD CONSTRAINT fk_bus_id_schedule FOREIGN KEY (bus_id) REFERENCES Buses(bus_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE LiveTracking
+    ADD CONSTRAINT fk_bus_id_tracking FOREIGN KEY (bus_id) REFERENCES Buses(bus_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Notifications
+    ADD CONSTRAINT fk_user_id_notification FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE UserPreferences
+    ADD CONSTRAINT fk_user_id_preference FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE ON UPDATE CASCADE;
