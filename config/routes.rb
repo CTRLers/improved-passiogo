@@ -1,5 +1,6 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  root "routes#index"
   get "stop_subscriptions/create"
   get "stop_subscriptions/destroy"
   get "route_subscriptions/create"
@@ -11,9 +12,9 @@ Rails.application.routes.draw do
   # Existing web routes
   resources :routes, only: [ :index, :show ]
   resources :stops, only: [ :index, :show ]
-  resources :users, only: [:new, :create, :show, :destroy] do
-    resources :route_subscriptions, only: [:create, :destroy], param: :route_id
-    resources :stop_subscriptions, only: [:create, :destroy], param: :stop_id
+  resources :users, only: [ :new, :create, :show, :destroy ] do
+    resources :route_subscriptions, only: [ :create, :destroy ], param: :route_id
+    resources :stop_subscriptions, only: [ :create, :destroy ], param: :stop_id
   end
   # API routes
   namespace :api do
