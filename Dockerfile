@@ -16,6 +16,8 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
+
+
 # Copy your startup script and set permissions
 #COPY start_servers.sh /rails/start_servers.sh
 
@@ -35,6 +37,13 @@ RUN bundle install && \
 
 # Copy all application files (including the submodule pointer)
 COPY . .
+
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
 RUN chmod +x /rails/start_servers.sh
 
 # Initialize (or update) the submodules so that /rails/passiogo is populated
@@ -61,7 +70,7 @@ COPY --from=build /rails /rails
 # (If not already created, you can create the non-root user here)
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails /rails
+    chown -R rails:rails /rails db storage tmp
 
 # Create the virtual environment and install FastAPI (Passiogo) dependencies
 WORKDIR /rails/passiogo

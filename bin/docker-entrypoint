@@ -11,4 +11,8 @@ if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
 fi
 
+# Run database migrations if needed
+echo "Running database migrations..."
+bundle exec rails db:migrate
+
 exec "${@}"
