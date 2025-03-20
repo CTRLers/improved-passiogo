@@ -3,7 +3,7 @@ require "net/http"
 require "json"
 
 class ExternalApiService
-  BASE_URL = "http://localhost:8000" # Change this to the actual URL where FastAPI is running
+  BASE_URL = "http://localhost:8080" # Change this to the actual URL where FastAPI is running
 
   def self.get_routes
     uri = URI("#{BASE_URL}/routes")
