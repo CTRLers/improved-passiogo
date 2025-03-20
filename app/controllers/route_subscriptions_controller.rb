@@ -5,14 +5,14 @@ class RouteSubscriptionsController < ApplicationController
   def create
     route = Route.find(params[:route_id])
     @user.subscribe_to_route(route)
-    redirect_to @user, notice: 'Route subscription added.'
+    redirect_to @user, notice: "Route subscription added."
   end
 
   # DELETE /users/:user_id/route_subscriptions/:route_id
   def destroy
     route = Route.find(params[:route_id])
     @user.unsubscribe_from_route(route)
-    redirect_to @user, notice: 'Route subscription removed.'
+    redirect_to @user, notice: "Route subscription removed."
   end
 
   private
