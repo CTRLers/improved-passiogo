@@ -23,16 +23,16 @@ class User < ApplicationRecord
   # Scopes for finding users interested in specific notifications
   scope :subscribed_to_route, ->(route_id) {
     joins(:route_subscriptions).where(route_subscriptions: { route_id: route_id })
-                               .where("preferences->>'receive_delay_notifications' != ?", 'false')
+                               .where("preferences->>'receive_delay_notifications' != ?", "false")
   }
 
   scope :subscribed_to_stop, ->(stop_id) {
     joins(:stop_subscriptions).where(stop_subscriptions: { stop_id: stop_id })
-                              .where("preferences->>'receive_delay_notifications' != ?", 'false')
+                              .where("preferences->>'receive_delay_notifications' != ?", "false")
   }
 
   scope :subscribed_to_announcements, -> {
-    where("preferences->>'receive_announcements' != ?", 'false')
+    where("preferences->>'receive_announcements' != ?", "false")
   }
 
   # Set default preferences for new users

@@ -11,8 +11,8 @@
 /.env*
 
 # Ignore all default key files.
-/config/master.key
-/config/credentials/*.key
+#/config/master.key
+#/config/credentials/*.key
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -49,3 +49,9 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+
+
+tmp/cache
+log
+node_modules
+.git

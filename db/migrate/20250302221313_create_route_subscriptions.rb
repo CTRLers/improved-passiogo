@@ -6,6 +6,6 @@ class CreateRouteSubscriptions < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :route_subscriptions, [:user_id, :route_id], unique: true
+    add_index :route_subscriptions, [ :user_id, :route_id ], unique: true
   end
 end
