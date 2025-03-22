@@ -34,7 +34,13 @@
 /config/master.key
 
 
+/passiogo
+/passiogo/*
 
+/node_modules
 
 
 /config/credentials/production.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

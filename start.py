@@ -17,7 +17,7 @@ def start_unicorn_server():
     os.chdir(fastapi_dir)
 
     # Start Unicorn server for FastAPI
-    unicorn_process = subprocess.Popen(["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"], stdout=None, stderr=None)
+    unicorn_process = subprocess.Popen(["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"], stdout=None, stderr=None)
     return unicorn_process
 
 if __name__ == "__main__":

@@ -23,6 +23,10 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render(NavigationComponent.new(nav: @nav)) %>
+    <main class="container mx-auto mt-28 px-5 flex evergreen bg-evergreen">
+
+      <%= yield %>
+    </main>
   </body>
 </html>
