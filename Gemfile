@@ -73,3 +73,6 @@ gem "view_component"
 gem "tailwindcss-ruby", "~> 4.0"
 
 gem "tailwindcss-rails", "~> 4.2"
+
+gem "jsbundling-rails", "~> 1.3"
+
