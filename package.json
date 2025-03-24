@@ -1,0 +1,23 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "chokidar": "^4.0.3",
+    "esbuild": "^0.25.1",
+    "postcss": "^8.5.3"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets --conditions=style",
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.15",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "^16.1.0",
+    "postcss-nested": "^7.0.2",
+    "tailwindcss": "^4.0.15"
+  }
+}
