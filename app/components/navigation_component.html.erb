@@ -1,13 +1,19 @@
-<div class="bg-evergreen py-4 px-10 border-b text-xl">
-  <ul class="flex">
-    <li class="mr-6">
-      <a class="hover:text-blue-800" href="#">Home</a>
-    </li>
-    <li class="mr-6">
-      <a class="hover:text-blue-800" href="#">Phones</a>
-    </li>
-    <li class="mr-6">
-      <a class="hover:text-blue-800" href="#">TVs</a>
-    </li>
-  </ul>
-</div>
+<nav class="bg-evergreen text-white px-4 py-3 flex justify-between items-center">
+  <!-- Left side: Brand/title -->
+  <div class="flex items-center space-x-8">
+    <%#= image_tag "logo.png", alt: "App Logo", class: "h-8 w-8" %>
+    <p class="h-8 w-8"> Header </p>
+    <span class="font-sans text-xl font-bold">Bus Tracker</span>
+  </div>
+  <!-- Right side: actions/user -->
+  <div class="flex items-center space-x-4">
+    <p>Alert</p>
+    <p> Signout</p>
+    <%#= link_to "Alerts", alerts_path, class: "hover:underline" %>
+    <%#= link_to "Sign out", logout_path, method: :delete, class: "hover:underline" %>
+    <!-- Hamburger menu for mobile -->
+    <button class="md:hidden p-2" data-action="click->menu#toggle">
+      <svg class="h-6 w-6" ...><!-- icon --></svg>
+    </button>
+  </div>
+</nav>
