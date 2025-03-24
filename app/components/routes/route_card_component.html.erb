@@ -1,0 +1,29 @@
+<!-- app/components/routes/route_card_component.html.erb -->
+<div class="card mt-4">
+  <div class="card-header">
+    Route: <%= @route["name"] %>
+  </div>
+  <div class="card-body">
+    <div class="mb-2">
+      <strong>Coordinates:</strong> <%= @route["latitude"] %>, <%= @route["longitude"] %>
+    </div>
+    <div class="mb-2">
+      <strong>Number of Stops:</strong> <%= helpers.fetch_stops(@route["id"])&.count || 0 %>
+    </div>
+    <% stops = helpers.fetch_stops(@route["id"]) %>
+    <% if stops.present? %>
+      <div>
+        <strong>Stops:</strong>
+        <ul>
+          <% stops.each do |stop| %>
+            <li><%= stop["name"] %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <div>
+        <strong>Stops:</strong> Not available
+      </div>
+    <% end %>
+  </div>
+</div>
