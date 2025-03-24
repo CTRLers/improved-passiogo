@@ -20,12 +20,14 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
   <body>
     <%= render(NavigationComponent.new(nav: @nav)) %>
-    <main class="container mx-auto mt-28 px-5 flex evergreen bg-evergreen">
+    <%#= render SidebarComponent.new() %>
 
+    <main class="container mx-auto mt-28 px-5 flex-col">
       <%= yield %>
     </main>
   </body>
