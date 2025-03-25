@@ -8,7 +8,7 @@ class Routes::RouteCardComponentTest < ViewComponent::TestCase
       "id" => "1",
       "name" => "Test Route",
       "latitude" => "28.000",
-      "longitude" => "-82.000",
+      "longitude" => "-82.000"
 
     }
 
@@ -16,7 +16,7 @@ class Routes::RouteCardComponentTest < ViewComponent::TestCase
     stubbed_helpers = Object.new.tap do |obj|
       def obj.fetch_stops(id)
         # Return stops regardless of the passed id.
-        [{"name" => "Stop 1"}, {"name" => "Stop 2"}]
+        [ { "name" => "Stop 1" }, { "name" => "Stop 2" } ]
       end
     end
 
