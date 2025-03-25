@@ -6,13 +6,6 @@ if gem list --no-installed --exact --silent foreman; then
 fi
 
 
-if [ -f /rails/venv/bin/activate ]; then
-  echo "Activating Python virtual environment..."
-  . /rails/venv/bin/activate
-else
-  echo "Virtual environment activation script not found."
-fi
-
 # Default to port 3000 if not specified
 export PORT="${PORT:-3000}"
 

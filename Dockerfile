@@ -1,93 +1,138 @@
-# syntax=docker/dockerfile:1
-# check=error=true
+# This Dockerfile is designed for production, not development.
+# docker build -t app .
+# docker run -d -p 80:80 8080:8080 -e RAILS_MASTER_KEY=8e133a9f3cce8d307ffd41360867837d --name app app
 
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.4.1
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-# Set working directory and install base packages for Rails
+# Rails app lives here
 WORKDIR /rails
+
+# Install base packages
+# Replace libpq-dev with sqlite3 if using SQLite, or libmysqlclient-dev if using MySQL
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Set production environment variables
+# Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
-
-
-# Copy your startup script and set permissions
-#COPY start_servers.sh /rails/start_servers.sh
-
-
-# Build stage: install build tools and gems
+# Throw-away build stage to reduce size of final image
 FROM base AS build
 
+# Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git pkg-config && \
+    apt-get install --no-install-recommends -y build-essential curl git pkg-config libyaml-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy gem files and install gems
+# Install JavaScript dependencies and Node.js for asset compilation
+#
+# Uncomment the following lines if you are using NodeJS need to compile assets
+#
+ ARG NODE_VERSION=22.14.0
+ ARG YARN_VERSION=1.22.22
+ ENV PATH=/usr/local/node/bin:$PATH
+ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+     /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+     npm install -g yarn@$YARN_VERSION && \
+     npm install -g mjml && \
+     rm -rf /tmp/node-build-master
+
+# Install Python, pip, and venv (for Passiogo)
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y python3 python3-pip python3-venv && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
-# Copy all application files (including the submodule pointer)
+# Install node modules
+#
+# Uncomment the following lines if you are using NodeJS need to compile assets
+#
+ COPY package.json yarn.lock ./
+ RUN --mount=type=cache,id=yarn,target=/rails/.cache/yarn YARN_CACHE_FOLDER=/rails/.cache/yarn \
+     yarn install --frozen-lockfile
+
+
+# Copy application code
 COPY . .
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
+RUN yarn build:css
+RUN yarn build
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+## Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+#
+## Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-RUN chmod +x /rails/start_servers.sh
+# Initialize (or update) the passiogo-api submodule if not already present
+RUN if [ ! -d "/rails/passiogo-api" ]; then \
+      git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo-api.git /rails/passiogo-api; \
+    else \
+      echo "passiogo-api already exists"; \
+    fi
 
-# Initialize (or update) the submodules so that /rails/passiogo is populated
-RUN git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo.git
-
-#RUN git submodule update --init --recursive
-
-# Precompile bootsnap code and assets
-RUN bundle exec bootsnap precompile app/ lib/ && \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-# Final image stage
-FROM base
-
-# Install Python, pip, and the venv module as root
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y python3 python3-pip python3-venv && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Copy built artifacts: gems and application code
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
-
-# (If not already created, you can create the non-root user here)
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails /rails db storage tmp
-
-# Create the virtual environment and install FastAPI (Passiogo) dependencies
-WORKDIR /rails/passiogo
+# Set up the Python virtual environment in passiogo-api
+WORKDIR /rails/passiogo-api
 RUN python3 -m venv /rails/venv && \
-    /rails/venv/bin/pip install --no-cache-dir -r requirements.txt
+    chown -R 1000:1000 /rails/venv
+# Uncomment the following if you have a requirements.txt:
+RUN /rails/venv/bin/pip install --no-cache-dir -r requirements.txt
 
-# Ensure the virtual environment is used for all Python commands
+# Ensure the virtual environment is used
 ENV PATH="/rails/venv/bin:$PATH"
-
-# Switch to the non-root user for security
-USER 1000:1000
 
 WORKDIR /rails
 
+# Final stage for app image
+FROM base
+
+# Copy built artifacts: gems, application
+COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
+COPY --from=build /rails /rails
+
+RUN apt-get update -qq && apt-get install --no-install-recommends -y python3 && \
+    rm -rf /var/lib/apt/lists/*
+
+ARG NODE_VERSION=22.14.0
+ARG YARN_VERSION=1.22.22
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+     /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+     npm install -g yarn@$YARN_VERSION && \
+     npm install -g mjml && \
+     rm -rf /tmp/node-build-master
 
 
-# Entrypoint and default command
+ENV PATH="/rails/venv/bin:$PATH"
+
+
+RUN chmod +x bin/run /rails/venv/bin/activate bin/prod
+RUN chmod -R +x /rails/app/assets/
+
+
+# Run and own only the runtime files as a non-root user for security
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails db storage tmp passiogo-api bin/run /rails/venv/bin/activate /rails/app/assets/ bin/prod
+USER 1000:1000
+
+# Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-EXPOSE 80 8080
-CMD ["/rails/start_servers.sh"]
+
+
+
+EXPOSE 3000 8080
+CMD ["/rails/bin/run"]
+

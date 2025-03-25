@@ -34,8 +34,8 @@
 /config/master.key
 
 
-/passiogo
-/passiogo/*
+/passiogo-api
+/passiogo-api/*
 
 /node_modules
 
