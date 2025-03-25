@@ -1,5 +1,3 @@
-# spec/requests/users_spec.rb
-
 require 'rails_helper'
 
 RSpec.describe 'User Account Deletion', type: :request do
