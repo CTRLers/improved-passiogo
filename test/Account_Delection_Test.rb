@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe 'User Account Deletion', type: :request do
   let!(:user) { create(:user) } # Create a user for testing
 
