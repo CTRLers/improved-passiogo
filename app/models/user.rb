@@ -3,7 +3,8 @@ class User < ApplicationRecord
   # Include default devise modules if you're using Devise for authentication
   # devise :database_authenticatable, :registerable,
   #        :recoverable, :rememberable, :validatable
-  validates :password, presence: true, length: { minimum: 8 }
+  # Only require password on create
+  validates :password, presence: true, length: { minimum: 8 }, on: :create
   # Associations
   has_many :route_subscriptions, dependent: :destroy
   has_many :stop_subscriptions, dependent: :destroy
