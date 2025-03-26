@@ -10,10 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_26_020323) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_26_033338) do
   create_table "messages", force: :cascade do |t|
+    t.string "message_type"
+    t.text "content"
+    t.string "messageable_type", null: false
+    t.integer "messageable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable"
   end
 
   create_table "route_subscriptions", force: :cascade do |t|
