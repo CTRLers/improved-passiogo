@@ -77,6 +77,7 @@
     <orderEntry type="library" scope="PROVIDED" name="io-console (v0.8.0, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="irb (v1.15.1, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jbuilder (v2.13.0, mise: 3.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="jsbundling-rails (v1.3.1, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="json (v2.10.1, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jwt (v2.10.1, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="kamal (v2.5.3, mise: 3.4.1) [gem]" level="application" />
@@ -179,30 +180,43 @@
         <option value="authentication" />
         <option value="benchmark" />
         <option value="channel" />
+        <option value="component" />
         <option value="controller" />
         <option value="erb:authentication" />
+        <option value="erb:component" />
+        <option value="erb:controller" />
+        <option value="erb:mailer" />
+        <option value="erb:scaffold" />
         <option value="generator" />
+        <option value="haml:component" />
         <option value="helper" />
         <option value="integration_test" />
         <option value="jbuilder" />
         <option value="job" />
+        <option value="locale:component" />
         <option value="mailbox" />
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="preview:component" />
         <option value="resource" />
+        <option value="rspec:component" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="script" />
+        <option value="slim:component" />
         <option value="solid_cable:install" />
         <option value="solid_cable:update" />
         <option value="solid_cache:install" />
         <option value="solid_queue:install" />
         <option value="stimulus" />
+        <option value="stimulus:component" />
         <option value="system_test" />
+        <option value="tailwindcss:component" />
         <option value="task" />
         <option value="test_unit:authentication" />
         <option value="test_unit:channel" />
+        <option value="test_unit:component" />
         <option value="test_unit:generator" />
         <option value="test_unit:install" />
         <option value="test_unit:mailbox" />
@@ -217,30 +231,43 @@
         <option value="authentication" />
         <option value="benchmark" />
         <option value="channel" />
+        <option value="component" />
         <option value="controller" />
         <option value="erb:authentication" />
+        <option value="erb:component" />
+        <option value="erb:controller" />
+        <option value="erb:mailer" />
+        <option value="erb:scaffold" />
         <option value="generator" />
+        <option value="haml:component" />
         <option value="helper" />
         <option value="integration_test" />
         <option value="jbuilder" />
         <option value="job" />
+        <option value="locale:component" />
         <option value="mailbox" />
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="preview:component" />
         <option value="resource" />
+        <option value="rspec:component" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="script" />
+        <option value="slim:component" />
         <option value="solid_cable:install" />
         <option value="solid_cable:update" />
         <option value="solid_cache:install" />
         <option value="solid_queue:install" />
         <option value="stimulus" />
+        <option value="stimulus:component" />
         <option value="system_test" />
+        <option value="tailwindcss:component" />
         <option value="task" />
         <option value="test_unit:authentication" />
         <option value="test_unit:channel" />
+        <option value="test_unit:component" />
         <option value="test_unit:generator" />
         <option value="test_unit:install" />
         <option value="test_unit:mailbox" />
@@ -526,6 +553,21 @@
           <RakeTaskImpl id="importmap">
             <subtasks>
               <RakeTaskImpl description="Setup Importmap for the app" fullCommand="importmap:install" id="install" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="javascript">
+            <subtasks>
+              <RakeTaskImpl description="Build your JavaScript bundle" fullCommand="javascript:build" id="build" />
+              <RakeTaskImpl description="Remove JavaScript builds" fullCommand="javascript:clobber" id="clobber" />
+              <RakeTaskImpl description="Install JavaScript dependencies" fullCommand="javascript:install" id="install" />
+              <RakeTaskImpl id="install">
+                <subtasks>
+                  <RakeTaskImpl description="Install Bun" fullCommand="javascript:install:bun" id="bun" />
+                  <RakeTaskImpl description="Install esbuild" fullCommand="javascript:install:esbuild" id="esbuild" />
+                  <RakeTaskImpl description="Install rollup.js" fullCommand="javascript:install:rollup" id="rollup" />
+                  <RakeTaskImpl description="Install Webpack" fullCommand="javascript:install:webpack" id="webpack" />
+                </subtasks>
+              </RakeTaskImpl>
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl id="log">
