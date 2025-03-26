@@ -1,26 +1,19 @@
 require 'test_helper'
 
-RSpec.describe 'User Account Deletion and Driver/User Functionality', type: :request do
-  let!(:user) { create(:user, role: 'user') }  # Regular user
-  let!(:driver) { create(:user, role: 'driver') }  # Driver
+class UserAccountDeletionTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:regular_user) # Adjust to your test fixture or create the user dynamically
+    @driver = users(:driver_user) # Adjust to your test fixture or create the driver dynamically
+  end
 
-  # Test for Driver-specific functionality
-  describe 'Driver-specific functionality' do
-    context 'when a driver is signed in' do
-      it 'allows a driver to access the driver dashboard' do
-        sign_in driver  # Assuming you use Devise for authentication
-        get driver_dashboard_path  # Replace with the correct path to your driver dashboard
-        expect(response).to have_http_status(:ok)  # Or :success, depending on your setup
-      end
-    end
+  test 'should not allow regular user to access driver dashboard' do
+    get driver_dashboard_path(@user) # Adjust with your driver dashboard path
+    assert_redirected_to root_path # Expecting to redirect to home page or error page
+    assert_equal 'You are not authorized to access this page.', flash[:alert]
+  end
 
-    context 'when a regular user is signed in' do
-      it 'does not allow a regular user to access the driver dashboard' do
-        sign_in user  # Sign in as regular user
-        get driver_dashboard_path  # Replace with the correct path to your driver dashboard
-        expect(response).to redirect_to(root_path)  # Redirecting regular user to the home page (or a proper restricted page)
-        expect(flash[:alert]).to eq("Access denied. Only drivers can access this page.")  # Optional: Customize the flash message
-      end
-    end
+  test 'should allow driver to access driver dashboard' do
+    get driver_dashboard_path(@driver) # Adjust with your driver dashboard path
+    assert_response :success
   end
 end
