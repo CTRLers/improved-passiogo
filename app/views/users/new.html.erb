@@ -1,4 +1,7 @@
+
+<div>
 <h1>Create Account</h1>
+</div>
 
 <%= form_with model: @user, local: true do |form| %>
   <% if @user.errors.any? %>
@@ -12,32 +15,13 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
-  </div>
+  <%= render Forms::TextInputComponent.new(form: form, field: :first_name, label: "First Name") %>
+  <%= render Forms::TextInputComponent.new(form: form, field: :last_name, label: "Last Name") %>
+  <%= render Forms::TextInputComponent.new(form: form, field: :email, label: "Email", field_type: :email_field, placeholder: "your@example.com") %>
+  <%= render Forms::TextInputComponent.new(form: form, field: :password, label: "Password", field_type: :password_field) %>
+  <%= render Forms::TextInputComponent.new(form: form, field: :password_confirmation, label: "Password Confirmation", field_type: :password_field) %>
 
-  <div>
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
-  </div>
-
-  <div>
-    <%= form.label :email %>
-    <%= form.email_field :email %>
-  </div>
-
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-
-  <div>
+  <div class="btn py-2 px-4 rounded hover:bg-apple/90 my-4 text-center">
     <%= form.submit "Create Account" %>
   </div>
 <% end %>

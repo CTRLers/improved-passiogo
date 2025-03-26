@@ -1,0 +1,4 @@
+web: bin/rails server
+css: yarn build:css --watch
+js: yarn build --watch
+passiogo: uvicorn passiogo-api.main:app --host 0.0.0.0 --port 8080

@@ -55,3 +55,6 @@ tmp/cache
 log
 node_modules
 .git
+
+/passiogo-api
+/passiogo-api/*

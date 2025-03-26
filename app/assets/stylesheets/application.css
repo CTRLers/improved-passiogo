@@ -8,3 +8,91 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+@import "tailwindcss";
+
+@theme {
+    --color-*: initial;
+    --color-evergreen: #005432;
+    --color-apple: #9CCB3B;
+    --color-sand: #EDEBD1;
+    --color-lemongrass: #DBE442;
+    --color-teal: #009374;
+    --color-usfgreen: #006747;
+    --color-usfgold: #CFC493;
+}
+
+/* Inject Tailwind’s layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Register custom brand color utilities using the functional @utility syntax.
+   The --value() function tells Tailwind to resolve the theme value from your CSS variable. */
+
+@utility text-primary {
+    /* When you use class "text-primary", it sets the text color to the custom evergreen value */
+    color: var(--color-evergreen);
+}
+
+@utility bg-primary {
+    background-color:  var(--color-evergreen);
+}
+
+@utility text-secondary {
+    color: var(--color-teal);
+}
+
+@utility bg-secondary {
+    background-color: var(--color-teal);
+}
+
+@utility text-accent {
+    color: var(--color-lemongrass);
+}
+
+@utility bg-accent {
+    background-color: var(--color-lemongrass);
+}
+
+/* Register a gradient utility.
+   For non–functional utilities, you can directly write CSS as long as it doesn’t rely on the --value() resolver.
+   Here we use CSS variables via var() because our theme variables are already defined. */
+@utility bg-gradient-brand {
+    background-image: linear-gradient(to right, var(--color-apple), var(--color-usfgreen));
+}
+
+/* For composite utilities (e.g. button styles), you must manually list out each property.
+   Note that you can also use the --value() function to resolve theme values if desired.
+   The following is a simplified example: */
+@utility btn {
+    font-family: --value(font-sans);
+    font-weight: --value(font-semibold);
+    /* Example spacing values; adjust as needed or resolve them from your theme */
+    padding-top: calc(var(--spacing) * 0.5);
+    padding-bottom: calc(var(--spacing) * 0.5);
+    padding-left: calc(var(--spacing) * 1);
+    padding-right: calc(var(--spacing) * 1);
+    border-radius: --value(border-radius);
+    background-color: var(--color-apple);
+    color: #FFFFFF;
+
+
+    /*/class: "bg-apple text-white font-bold py-2 px-4 rounded hover:bg-apple/90"*/
+}
+
+/* Similarly, you can define other component utilities like card and alert:
+   (Values below are for demonstration and may need to be replaced with real theme tokens.) */
+@utility card {
+    background-color: white;
+    /* Using a literal dark variant fallback; for dynamic resolution you’d need to register dark mode variants separately */
+    box-shadow: var(--shadow-lg);
+    padding: calc(var(--spacing) * 4);
+    border-radius: --value(border-radius);
+}
+
+@utility alert {
+    border-radius: --value(border-radius);
+    padding: calc(var(--spacing) * 1);
+    font-family: --value(font-sans);
+    font-size: --value(text-sm);
+}
