@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'test_helper'
 
 RSpec.describe 'User Account Deletion and Driver/User Functionality', type: :request do
   let!(:user) { create(:user, role: 'user') }  # Regular user
