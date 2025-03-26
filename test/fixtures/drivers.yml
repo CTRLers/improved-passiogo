@@ -1,0 +1,20 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the "{}" from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+# test/fixtures/users.yml
+regular_user:
+  email: regular@example.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+
+
+driver:
+  email: driver@example.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  first_name: "First"
+  last_name: "User"
+    #  fcm_token: ""
+  preferences: { "receive_announcements": true, "receive_delay_notifications": true }
+  driver: true

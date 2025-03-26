@@ -2,8 +2,7 @@ require "test_helper"
 
 class MessageTest < ActiveSupport::TestCase
   def setup
-    # Create a sample messageable for testing.
-    # Replace attributes with the minimal required for your models.
+    # Create a sample messageable for testing
     @route = Route.create!(name: "Test Route", latitude: 1.23, longitude: 4.56)
     # Create a Stop record that belongs to the Route.
     @stop  = Stop.create!(name: "Test Stop", latitude: 1.23, longitude: 4.56, route: @route)
