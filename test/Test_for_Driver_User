@@ -1,0 +1,19 @@
+require 'test_helper'
+
+class UserAccountDeletionTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:regular_user) # Adjust to your test fixture or create the user dynamically
+    @driver = users(:driver_user) # Adjust to your test fixture or create the driver dynamically
+  end
+
+  test 'should not allow regular user to access driver dashboard' do
+    get driver_dashboard_path(@user) # Adjust with your driver dashboard path
+    assert_redirected_to root_path # Expecting to redirect to home page or error page
+    assert_equal 'You are not authorized to access this page.', flash[:alert]
+  end
+
+  test 'should allow driver to access driver dashboard' do
+    get driver_dashboard_path(@driver) # Adjust with your driver dashboard path
+    assert_response :success
+  end
+end
