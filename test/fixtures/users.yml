@@ -6,7 +6,7 @@
 #
 one:
   email: one@example.com
-  password_digest: <%= BCrypt::Password.create('password') %>
+  encrypted_password: <%= encrypted_devise_password('password123') %>
   first_name: "First"
   last_name: "User"
 #  fcm_token: ""
@@ -14,7 +14,8 @@ one:
 
 two:
   email: two@example.com
-  password_digest: <%= BCrypt::Password.create('password') %>
+  encrypted_password: <%= encrypted_devise_password('password123') %>
+
   first_name: "Second"
   last_name: "User"
 #  fcm_token: ""
