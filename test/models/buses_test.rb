@@ -15,16 +15,16 @@ class CreateBusesTest < ActiveSupport::TestCase
 
   test "buses table should have correct columns" do
     columns = ActiveRecord::Base.connection.columns(:buses).map(&:name)
-    assert_includes columns, "bus_number"
-    assert_includes columns, "capacity"
-    assert_includes columns, "status"
-    assert_includes columns, "created_at"
-    assert_includes columns, "updated_at"
+    assert_equal %w[id bus_number capacity status created_at updated_at], columns.sort
   end
 
-  test "bus_number should be unique and not null" do
+  test "bus_number should be not null and unique" do
     column = ActiveRecord::Base.connection.columns(:buses).find { |c| c.name == "bus_number" }
     assert_not column.null, "bus_number should not allow NULL"
+
+    index = ActiveRecord::Base.connection.indexes(:buses).find { |i| i.columns.include?("bus_number") }
+    assert_not_nil index, "bus_number should have a unique index"
+    assert index.unique, "bus_number index should be unique"
   end
 
   test "capacity should be not null" do
@@ -33,7 +33,8 @@ class CreateBusesTest < ActiveSupport::TestCase
   end
 
   test "status should have a default value" do
-    default_value = ActiveRecord::Base.connection.columns(:buses).find { |c| c.name == "status" }.default
-    assert_equal "active", default_value, "status default value should be 'active'"
+    column = ActiveRecord::Base.connection.columns(:buses).find { |c| c.name == "status" }
+    assert_not column.null, "status should not allow NULL"
+    assert_equal "active", column.default, "status default value should be 'active'"
   end
 end
