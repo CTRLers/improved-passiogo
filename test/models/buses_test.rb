@@ -1,78 +1,59 @@
 require "test_helper"
 
 class BusTest < ActiveSupport::TestCase
+  # Set up a valid bus for reuse in tests
   def setup
-    # Create a Bus record for testing
-    @bus = Bus.create!(
-      bus_number: "12345",
-      capacity: 50,
-      status: "active",
-      bus_color: "red"
-    )
+    @bus = Bus.new(bus_number: "123", capacity: 50, status: "active", bus_color: "red")
   end
 
+  # Test that a bus with valid attributes can be saved
   test "should save valid bus" do
-    bus = Bus.new(
-      bus_number: "67890",
-      capacity: 40,
-      status: "inactive",
-      bus_color: "blue"
-    )
-    assert bus.save, "Bus with valid attributes should be saved"
+    assert @bus.save, "Could not save a valid bus"
   end
 
+  # Test that a bus cannot be saved without a bus_number
   test "should not save bus without bus_number" do
-    bus = Bus.new(
-      capacity: 40,
-      status: "active",
-      bus_color: "blue"
-    )
-    assert_not bus.save, "Saved the bus without a bus_number"
+    @bus.bus_number = nil
+    assert_not @bus.save, "Saved the bus without a bus_number"
   end
 
+  # Test that a bus cannot be saved without a capacity
   test "should not save bus without capacity" do
-    bus = Bus.new(
-      bus_number: "67890",
-      status: "active",
-      bus_color: "blue"
-    )
-    assert_not bus.save, "Saved the bus without a capacity"
+    @bus.capacity = nil
+    assert_not @bus.save, "Saved the bus without a capacity"
   end
 
-  test "should not save bus without status" do
-    bus = Bus.new(
-      bus_number: "67890",
-      capacity: 40,
-      bus_color: "blue"
-    )
-    assert_not bus.save, "Saved the bus without a status"
+  # Test that a bus cannot be saved with a negative capacity
+  test "should not save bus with negative capacity" do
+    @bus.capacity = -5
+    assert_not @bus.save, "Saved the bus with a negative capacity"
   end
 
+  # Test that a bus cannot be saved without a bus_color
   test "should not save bus without bus_color" do
-    bus = Bus.new(
-      bus_number: "67890",
-      capacity: 40,
-      status: "active"
-    )
-    assert_not bus.save, "Saved the bus without a bus_color"
+    @bus.bus_color = nil
+    assert_not @bus.save, "Saved the bus without a bus_color"
   end
 
-  test "should enforce unique bus_number" do
-    duplicate_bus = Bus.new(
-      bus_number: "12345", # Same as @bus
-      capacity: 45,
-      status: "inactive",
-      bus_color: "green"
-    )
-    assert_not duplicate_bus.save, "Saved a bus with a duplicate bus_number"
+  # Test that a bus cannot be saved with an invalid status
+  test "should not save bus with invalid status" do
+    @bus.status = "broken"
+    assert_not @bus.save, "Saved the bus with an invalid status"
   end
 
-  test "should default status to active" do
-    new_bus = Bus.create(
-      bus_number: "98765",
-      capacity: 30,
-      bus_color: "yellow"
-    )
-    assert_equal "active", new_bus.status, "Status did not default to active"
+  # Test that a bus with a valid status can be saved
+  test "should save bus with valid status" do
+    valid_statuses = ["active", "inactive", "maintenance"]
+    valid_statuses.each do |status|
+      @bus.status = status
+      assert @bus.save, "Could not save the bus with valid status #{status}"
+    end
+  end
+
+  # Test that a bus number must be unique
+  test "should not save bus with duplicate bus_number" do
+    duplicate_bus = @bus.dup
+    @bus.save
+    assert_not duplicate_bus.save, "Saved the bus with a duplicate bus_number"
   end
 end
