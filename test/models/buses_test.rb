@@ -19,6 +19,7 @@ class CreateBusesTest < ActiveSupport::TestCase
       "bus_number" => :string,
       "capacity" => :integer,
       "status" => :string,
+      "bus_color" => :string,
       "created_at" => :datetime,
       "updated_at" => :datetime
     }
@@ -48,5 +49,10 @@ class CreateBusesTest < ActiveSupport::TestCase
     column = ActiveRecord::Base.connection.columns(:buses).find { |c| c.name == "status" }
     assert_not column.null, "status should not allow NULL"
     assert_equal "active", column.default, "status default should be 'active'"
+  end
+
+  test "bus_color should be not null" do
+    column = ActiveRecord::Base.connection.columns(:buses).find { |c| c.name == "bus_color" }
+    assert_not column.null, "bus_color should not allow NULL"
   end
 end
