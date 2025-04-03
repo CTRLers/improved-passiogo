@@ -1,8 +1,9 @@
-require "test_helper"
+require 'test_helper'
 
-class BusTest < ActiveSupport::TestCase
+class BusesTest < ActiveSupport::TestCase
   def setup
-    @bus = Bus.new(bus_number: "123ABC", capacity: 50, status: "active", bus_color: "red")
+    # Create a new bus object before each test
+    @bus = Bus.new(bus_number: '123ABC', capacity: 50, status: 'active', bus_color: 'red')
   end
 
   test "should be valid with all fields" do
