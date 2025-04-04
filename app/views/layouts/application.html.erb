@@ -8,6 +8,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
@@ -18,17 +19,25 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
   </head>
 
   <body>
     <%= render(NavigationComponent.new(nav: @nav)) %>
     <%#= render SidebarComponent.new() %>
 
-    <main class="container mx-auto mt-28 px-5 flex-col">
+
+
+    <main class="flex-col pt-16">
+<!--      <div data-controller="hello"> </div>-->
+
+
+
       <%= yield %>
+
     </main>
   </body>
 </html>

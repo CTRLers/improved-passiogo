@@ -1,19 +1,40 @@
-<nav class="bg-evergreen text-white px-4 py-3 flex justify-between items-center">
-  <!-- Left side: Brand/title -->
-  <div class="flex items-center space-x-8">
-    <%#= image_tag "logo.png", alt: "App Logo", class: "h-8 w-8" %>
-    <p class="h-8 w-8"> Header </p>
-    <span class="font-sans text-xl font-bold">Bus Tracker</span>
-  </div>
-  <!-- Right side: actions/user -->
-  <div class="flex items-center space-x-4">
-    <p>Alert</p>
-    <p> Signout</p>
-    <%#= link_to "Alerts", alerts_path, class: "hover:underline" %>
-    <%#= link_to "Sign out", logout_path, method: :delete, class: "hover:underline" %>
-    <!-- Hamburger menu for mobile -->
-    <button class="md:hidden p-2" data-action="click->menu#toggle">
-      <svg class="h-6 w-6" ...><!-- icon --></svg>
-    </button>
+
+
+
+<nav class="fixed top-0 w-full bg-white shadow z-50">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <!-- Branding & Logo -->
+      <div class="flex items-center">
+        <%= link_to root_path, class: "flex items-center" do %>
+<!--          <img src="/assets/logo.png" alt="PassioGO Logo" class="h-8 w-8 mr-2">-->
+          <span class="font-bold text-xl">PassioGO</span>
+        <% end %>
+      </div>
+      <!-- Navigation Items -->
+      <div class="hidden md:flex space-x-8">
+        <%= link_to "Dashboard", root_path, class: "text-gray-600 hover:text-blue-500" %>
+        <%#= link_to "Routes", routes_path, class: "text-gray-600 hover:text-blue-500" %>
+        <%#= link_to "Bus Schedule", bus_schedule_path, class: "text-gray-600 hover:text-blue-500" %>
+        <%#= link_to "Real-Time Tracking", tracking_path, class: "text-gray-600 hover:text-blue-500" %>
+      </div>
+      <!-- Authentication & Sign Out -->
+      <div class="relative" data-controller="dropdown">
+        <% if helpers.user_signed_in? %>
+          <button data-action="click->dropdown#toggle" class="flex items-center focus:outline-none">
+<!--            <img src="<%#= helpers.current_user.avatar_url || 'https://via.placeholder.com/40' %>" alt="User Avatar" class="h-10 w-10 rounded-full">-->
+            Profile
+
+          </button>
+          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 text-black">
+            <%= link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+
+            <%= link_to "Sign Out", helpers.destroy_user_session_path, method: :delete, data: { turbo: true, "turbo-method": :delete }, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          </div>
+        <% else %>
+          <%= link_to "Sign In", new_user_session_path, class: "text-gray-600 hover:text-blue-500" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </nav>

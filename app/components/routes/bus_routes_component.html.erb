@@ -1,0 +1,68 @@
+
+
+<div class="flex min-h-screen">
+  <!-- Left Sidebar (Filters and Tabs) -->
+  <aside class="w-64 bg-gray-100 p-4 space-y-4">
+    <input type="text" placeholder="Search Route Name or Number…" class="w-full p-2 border rounded" />
+    <label class="flex items-center space-x-2">
+      <input type="checkbox" checked class="form-checkbox" />
+      <span>Show Active Routes Only</span>
+    </label>
+    <select class="w-full p-2 border rounded">
+      <option>Name</option>
+      <option>Popularity</option>
+      <option>Proximity</option>
+    </select>
+    <div class="tabs space-x-2">
+      <button class="px-3 py-1 bg-green-600 text-white rounded">All</button>
+      <button class="px-3 py-1 bg-gray-300 rounded">Campus</button>
+      <button class="px-3 py-1 bg-gray-300 rounded">Off-Campus</button>
+      <button class="px-3 py-1 bg-gray-300 rounded">Weekend</button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-4 space-y-4">
+    <!-- Interactive Map -->
+    <div data-controller="map" class="relative h-96 rounded border">
+      <div id="map" class="w-full h-full rounded"></div>
+    </div>
+
+    <!-- Collapsible Route Cards -->
+    <div class="space-y-4">
+      <% @routes.each do |route| %>
+        <!-- Attach the collapse controller to the entire route card -->
+        <div class="border rounded overflow-hidden" data-controller="collapse">
+          <!-- Header button triggers the toggle action -->
+          <button
+            data-action="click->collapse#toggle"
+            class="w-full flex justify-between items-center p-4 bg-gray-200 hover:bg-gray-300 focus:outline-none">
+            <span><%= route.name %></span>
+            <span class="text-sm font-semibold">
+              <%= route.on_time? ? "🟢 On-Time" : "🔴 Delayed by #{route.delay} mins" %>
+            </span>
+          </button>
+          <!-- Collapsible content with a named target -->
+          <div data-collapse-target="content" class="p-4 hidden">
+            <p><strong>Operating Hours:</strong> <%= route.start_time %> – <%= route.end_time %></p>
+            <p><strong>Frequency:</strong> Every <%= route.frequency %> mins</p>
+            <p><strong>Stops:</strong> <%= route.stops.join(" → ") %></p>
+            <div class="timeline mt-2 space-y-1">
+              <% route.timeline.each do |arrival| %>
+                <span class="block text-sm"><%= arrival.time %> - <%= arrival.stop_name %></span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <!-- Notification Floating Button -->
+    <button class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
+      🔔
+    </button>
+  </main>
+</div>
+
+

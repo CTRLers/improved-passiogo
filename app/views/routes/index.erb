@@ -1,5 +1,6 @@
-<h1>Routes</h1>
 <ul>
+  <%= render Routes::BusRoutesComponent.new(routes: @routes) %>
+
   <% @routes.each do |route| %>
     <%= render Routes::RouteCardComponent.new(route: route) %>
   <% end %>
