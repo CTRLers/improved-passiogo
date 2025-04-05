@@ -1,0 +1,31 @@
+one:
+  email: "user1@example.com"
+  first_name: "User"
+  last_name: "One"
+  fcm_token: "token123"
+  preferences: {}
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  driver: false
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  provider:
+  uid:
+
+two:
+  email: "user2@example.com"
+  first_name: "User"
+  last_name: "Two"
+  fcm_token: "token456"
+  preferences: {}
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  driver: true
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  provider:
+  uid:

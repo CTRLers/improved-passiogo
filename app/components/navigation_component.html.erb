@@ -29,7 +29,7 @@
           <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 text-black">
             <%= link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
 
-            <%= link_to "Sign Out", helpers.destroy_user_session_path, method: :delete, data: { turbo: true, "turbo-method": :delete }, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+            <%= button_to "Sign Out", helpers.destroy_user_session_path, method: :delete, data: { turbo: true, "turbo-method": :delete }, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
           </div>
         <% else %>
           <%= link_to "Sign In", new_user_session_path, class: "text-gray-600 hover:text-blue-500" %>
