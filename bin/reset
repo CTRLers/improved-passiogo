@@ -1,0 +1,4 @@
+rails tmp:clear
+rails db:drop
+rails db:create
+rails db:migrate

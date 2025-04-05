@@ -1,5 +1,7 @@
 <div class="form-group my-4">
   <%= form.label field, label %>
-  <%= form.send(field_type || :text_field, field, class: classes, placeholder: placeholder) %>
+  <% if hint.present? %>
+    <small class="text-sm text-gray-500 italic"><%= hint %></small><br />
+  <% end %>
+  <%= form.send(field_type, field, class: classes, placeholder: placeholder, autocomplete: autocomplete) %>
 </div>
-

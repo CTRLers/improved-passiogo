@@ -1,0 +1,20 @@
+<div class="min-h-screen flex">
+  <!-- Left Panel: Bus image background with subtle overlay -->
+  <div class="sm:hidden md:flex md:w-1/2 bg-cover bg-center" style="background-image: url('<%= image_path("bus.png") %>');">
+    <div class=" bg-black/20 w-full h-full flex items-center justify-center">
+      <!-- Optional: add transit map overlays or text here -->
+
+    </div>
+  </div>
+
+  <!-- Right Panel: Registration Form -->
+  <div class="flex flex-col justify-center items-center md:w-1/2 p-6 bg-gray-50">
+    <%= render(Forms::RegistrationFormComponent.new(
+      resource: resource,
+      resource_name: resource_name,
+      devise_mapping: devise_mapping)) %>
+  </div>
+</div>
+
+
+

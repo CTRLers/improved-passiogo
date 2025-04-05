@@ -1,0 +1,40 @@
+<div class="bg-white p-8 rounded shadow-lg w-full max-w-md">
+  <h2 class="text-2xl font-bold mb-2">Welcome Back</h2>
+  <p class="text-sm text-gray-600 mb-6">Sign in to access PassioGo's live bus tracking.</p>
+
+  <%= form_for(resource, as: resource_name, url: helpers.session_path(resource_name)) do |f| %>
+    <%= render Forms::TextInputComponent.new(
+      form: f,
+      field: :email,
+      label: "Email Address",
+      field_type: :email_field,
+      placeholder: "Email Address",
+      autocomplete: "email"
+    ) %>
+
+    <%= render Forms::TextInputComponent.new(
+      form: f,
+      field: :password,
+      label: "Password",
+      field_type: :password_field,
+      placeholder: "Password",
+      autocomplete: "current-password"
+    ) %>
+
+    <div class="mb-4 flex items-center">
+      <%= f.check_box :remember_me, class: "mr-2" %>
+      <%= f.label :remember_me, "Remember me", class: "text-gray-700" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.submit "Log in", class: "w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150" %>
+    </div>
+
+
+    <%= render "devise/shared/links" %>
+  <% end %>
+
+  <div class="flex justify-center">
+    <%= link_to "Forgot your password?", helpers.new_password_path(resource_name), class: "text-blue-500 underline text-sm" %>
+  </div>
+</div>

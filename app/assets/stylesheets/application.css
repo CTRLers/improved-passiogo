@@ -10,8 +10,9 @@
  */
 @import "tailwindcss";
 
+
+
 @theme {
-    --color-*: initial;
     --color-evergreen: #005432;
     --color-apple: #9CCB3B;
     --color-sand: #EDEBD1;
