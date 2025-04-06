@@ -84,7 +84,7 @@ jobs:
           git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo-api.git
           pip install -r passiogo-api/requirements.txt
           SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-          chmod +x bin/prod
+          chmod +x bin/ci
 
       - name: Set up database
         run: |
@@ -93,8 +93,17 @@ jobs:
 
       - name: Start Rails server
         run: |
-          bin/prod
-          sleep 10  # Wait for the server to start
+          bin/ci &    # Start server in background
+    # Wait for the server to be available (e.g., on port 3000)
+          for i in {1..20}; do
+            if curl --silent http://localhost:3000 > /dev/null; then
+              echo "Server is up!"
+              break
+            else
+              echo "Waiting for server..."
+              sleep 3
+            fi
+          done
 
       - name: Run tests
         env:
