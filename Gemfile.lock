@@ -401,8 +401,8 @@ GEM
       ostruct
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
-    store_model (1.6.2)
-      activerecord (>= 5.2)
+    store_model (4.2.1)
+      activerecord (>= 7.0)
     stringio (3.1.6)
     tailwindcss-rails (4.2.2)
       railties (>= 7.0.0)
@@ -487,7 +487,7 @@ DEPENDENCIES
   solid_queue
   sqlite3 (>= 2.1)
   stimulus-rails
-  store_model (~> 1.6)
+  store_model (~> 4.2)
   tailwindcss-rails (~> 4.2)
   tailwindcss-ruby (~> 4.0)
   thruster
