@@ -84,6 +84,7 @@ jobs:
           git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo-api.git
           pip install -r passiogo-api/requirements.txt
           SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+          chmod +x bin/prod
 
       - name: Set up database
         run: |
