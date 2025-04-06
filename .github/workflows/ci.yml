@@ -88,7 +88,7 @@ jobs:
 
       - name: Start Rails server
         run: |
-          bundle exec rails server -b 0.0.0.0 -p 8080 &
+          bin/dev
           sleep 10  # Wait for the server to start
 
       - name: Run tests
