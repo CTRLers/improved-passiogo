@@ -93,8 +93,7 @@ jobs:
 
       - name: Start Rails server
         run: |
-          bin/ci &    # Start server in background
-    # Wait for the server to be available (e.g., on port 3000)
+          bin/ci &    
           for i in {1..20}; do
             if curl --silent http://localhost:3000 > /dev/null; then
               echo "Server is up!"
