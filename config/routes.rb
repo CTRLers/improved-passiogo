@@ -14,10 +14,11 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
-  resources :users do
+  resources :users, only: [:show] do
     resources :route_subscriptions, only: [ :create, :destroy ]
     resources :stop_subscriptions, only: [ :create, :destroy ]
   end
+
 
 
 
