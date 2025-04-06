@@ -124,7 +124,7 @@ GEM
       logger
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
-    fcm (1.0.8)
+    fcm (2.0.1)
       faraday (>= 1.0.0, < 3.0)
       googleauth (~> 1)
     fugit (1.11.1)
@@ -469,7 +469,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   dotenv-rails
-  fcm (~> 1.0)
+  fcm (~> 2.0)
   httparty (~> 0.22.0)
   jbuilder
   jsbundling-rails (~> 1.3)
