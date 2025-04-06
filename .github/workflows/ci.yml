@@ -83,6 +83,7 @@ jobs:
           yarn install
           git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo-api.git
           pip install -r passiogo-api/requirements.txt
+          SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
       - name: Set up database
         run: |
@@ -91,7 +92,7 @@ jobs:
 
       - name: Start Rails server
         run: |
-          bin/dev
+          bin/prod
           sleep 10  # Wait for the server to start
 
       - name: Run tests
