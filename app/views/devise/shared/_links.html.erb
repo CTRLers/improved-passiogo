@@ -1,25 +1,66 @@
-<%- if controller_name != 'sessions' %>
-  <%= link_to "Log in", new_session_path(resource_name) %><br />
-<% end %>
+<div class="mt-6 space-y-2 text-sm text-center text-gray-600">
 
-<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "Sign up", new_registration_path(resource_name) %><br />
-<% end %>
+  <% if devise_mapping.omniauthable? %>
+    <div class="mt-4 space-y-2">
+      <% resource_class.omniauth_providers.each do |provider| %>
+        <% pretty_name = provider.to_s.titleize.gsub("Oauth2", "").strip %>
 
-<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-<% end %>
+        <% icon = case provider.to_s
+                  when "google_oauth2"
+                    '<svg class="w-5 h-5 mr-2" viewBox="0 0 488 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M488 261.8c0-17.8-1.6-35-4.6-51.6H249v97.9h134.3c-5.8 31.1-23.2 57.5-49.4 75.2l79.8 62.1c46.5-42.9 73.3-106.1 73.3-183.6z" fill="#4285F4"/><path d="M249 492c66.7 0 122.8-22.1 163.7-60l-79.8-62.1c-22.1 14.9-50.2 23.8-83.9 23.8-64.5 0-119-43.5-138.6-102.1H26v64.3C66.2 444.2 152.8 492 249 492z" fill="#34A853"/><path d="M110.4 291.6c-4.8-14.4-7.6-29.8-7.6-45.6s2.7-31.2 7.6-45.6V136H26C9.3 168.5 0 204.5 0 246s9.3 77.5 26 110.1l84.4-64.5z" fill="#FBBC05"/><path d="M249 97.9c36.2 0 68.6 12.5 94.1 37.1l70.4-70.4C371.8 24.7 319.4 0 249 0 152.8 0 66.2 47.8 26 137.9l84.4 64.4C130 141.4 184.5 97.9 249 97.9z" fill="#EA4335"/></svg>'
+                  when "facebook"
+                    '<svg class="w-5 h-5 mr-2" viewBox="0 0 320 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M279.14 288l14.22-92.66h-88.91V127.09c0-25.35 12.42-50.06 52.24-50.06H293V6.26S273.36 0 256.36 0C175.16 0 137 54.42 137 124.72v71.62H56v92.66h81v224h100.2V288z"/></svg>'
+                  else
+                    ""
+                  end.html_safe %>
 
-<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
-<% end %>
+        <%= link_to omniauth_authorize_path(resource_name, provider),
+                    method: :post,
+                    class: "flex items-center justify-center w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded shadow-sm border transition duration-150",
+                    data: { turbo: false } do %>
 
-<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
-<% end %>
-
-<%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %><br />
+        <span class="flex items-center">
+          <%= icon %>
+          Sign in with <%= pretty_name %>
+        </span>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-<% end %>
+
+
+  <% if controller_name != 'sessions' %>
+    <div>
+      <%= link_to "Already have an account? Log in", new_session_path(resource_name), class: "text-blue-600 hover:underline" %>
+    </div>
+  <% end %>
+
+
+
+  <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <div>
+      <%= link_to "Need an account? Sign up", new_registration_path(resource_name), class: "text-blue-600 hover:underline" %>
+    </div>
+  <% end %>
+
+  <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+    <div>
+      <%= link_to "Forgot your password?", new_password_path(resource_name), class: "text-blue-600 hover:underline" %>
+    </div>
+  <% end %>
+
+  <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+    <div>
+      <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "text-blue-600 hover:underline" %>
+    </div>
+  <% end %>
+
+  <% if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+    <div>
+      <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name), class: "text-blue-600 hover:underline" %>
+    </div>
+  <% end %>
+
+
+
+</div>
