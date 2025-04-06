@@ -80,6 +80,8 @@ jobs:
         run: |
           gem install bundler
           bundle install
+          yarn install
+          pip install passiogo-api/requirements.txt
 
       - name: Set up database
         run: |
