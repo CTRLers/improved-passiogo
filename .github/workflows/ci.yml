@@ -82,7 +82,7 @@ jobs:
           bundle install
           yarn install
           git clone --recurse-submodules https://github.com/dayne-2stacks/passiogo-api.git
-          pip install passiogo-api/requirements.txt
+          pip install -r passiogo-api/requirements.txt
 
       - name: Set up database
         run: |
