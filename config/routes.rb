@@ -4,10 +4,6 @@ Rails.application.routes.draw do
   resources :routes, only: [ :index, :show ]
   resources :stops, only: [ :index, :show ]
 
-  resources :users do
-    resources :route_subscriptions, only: [ :create, :destroy ]
-    resources :stop_subscriptions, only: [ :create, :destroy ]
-  end
 
 
   devise_for :users, controllers: {
@@ -18,6 +14,10 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks"
   }
 
+  resources :users do
+    resources :route_subscriptions, only: [ :create, :destroy ]
+    resources :stop_subscriptions, only: [ :create, :destroy ]
+  end
 
 
 
