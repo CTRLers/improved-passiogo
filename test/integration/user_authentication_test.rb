@@ -61,6 +61,7 @@ class UserAuthenticationTest < ActionDispatch::IntegrationTest
         }
       }
     end
+    puts assigns(:user).errors.full_messages if assigns(:user)&.errors&.any?
     assert_redirected_to root_path
     follow_redirect!
     assert_equal "Welcome! You have signed up successfully.", flash[:notice]
@@ -83,11 +84,13 @@ class UserAuthenticationTest < ActionDispatch::IntegrationTest
 
     patch user_registration_path, params: {
       user: {
+        email: @user.email,
         first_name: "Updated",
         last_name: @user.last_name,  # Include required fields
         current_password: "password123"
       }
     }
+    puts assigns(:user).errors.full_messages if assigns(:user)&.errors&.any?
     assert_redirected_to root_path
     follow_redirect!
     assert_equal "Your account has been updated successfully.", flash[:notice]
