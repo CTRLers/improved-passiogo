@@ -90,3 +90,5 @@ gem "omniauth-facebook"
 
 # Gemfile
 gem "dotenv-rails", groups: [ :development, :test ]
+
+gem "rails-controller-testing"
