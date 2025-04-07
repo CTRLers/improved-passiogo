@@ -89,6 +89,7 @@ jobs:
       - name: Set up database
         run: |
           bundle exec rails db:create
+          bundle wxwc rails cb:prepare
           bundle exec rails db:migrate
 
       - name: Start Rails server
