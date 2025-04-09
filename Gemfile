@@ -11,7 +11,7 @@ gem "sqlite3", ">= 2.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+# gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -78,3 +78,15 @@ gem "jsbundling-rails", "~> 1.3"
 
 
 # gem "cssbundling-rails", "~> 1.4"
+
+gem "devise", "~> 4.9"
+
+
+gem "omniauth"
+
+gem "omniauth-google-oauth2"
+
+gem "omniauth-facebook"
+
+# Gemfile
+gem "dotenv-rails", groups: [ :development, :test ]

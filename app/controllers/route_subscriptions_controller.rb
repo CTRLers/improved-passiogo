@@ -1,16 +1,19 @@
 class RouteSubscriptionsController < ApplicationController
   before_action :set_user
 
-  # POST /users/:user_id/route_subscriptions/:route_id
+  # POST /users/:user_id/route_subscriptions
   def create
-    route = Route.find(params[:route_id])
+    # Retrieve the route ID from the nested parameters
+    route = Route.find(params[:route_subscription][:route_id])
     @user.subscribe_to_route(route)
     redirect_to @user, notice: "Route subscription added."
   end
 
-  # DELETE /users/:user_id/route_subscriptions/:route_id
+  # DELETE /users/:user_id/route_subscriptions/:id
   def destroy
-    route = Route.find(params[:route_id])
+    # Find the subscription by its ID
+    subscription = @user.route_subscriptions.find(params[:id])
+    route = subscription.route
     @user.unsubscribe_from_route(route)
     redirect_to @user, notice: "Route subscription removed."
   end

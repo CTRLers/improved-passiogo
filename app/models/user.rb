@@ -1,8 +1,17 @@
 class User < ApplicationRecord
-  has_secure_password
-  # Include default devise modules if you're using Devise for authentication
-  # devise :database_authenticatable, :registerable,
-  #        :recoverable, :rememberable, :validatable
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [ :google_oauth2, :facebook ]
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
+  def full_name
+    "#{first_name} #{last_name}".strip
+  end
+
   # Only require password on create
   validates :password, presence: true, length: { minimum: 8 }, on: :create
   # Associations
@@ -21,6 +30,16 @@ class User < ApplicationRecord
   # Basic validations (adjust based on your authentication system)
   validates :email, presence: true, uniqueness: true
 
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.first_name = auth.info.first || auth.info.name.split(" ").first
+      user.last_name = auth.info.last || auth.info.name.split(" ").last
+    end
+  end
+
+
   # Scopes for finding users interested in specific notifications
   scope :subscribed_to_route, ->(route_id) {
     joins(:route_subscriptions).where(route_subscriptions: { route_id: route_id })
@@ -35,6 +54,8 @@ class User < ApplicationRecord
   scope :subscribed_to_announcements, -> {
     where("preferences->>'receive_announcements' != ?", "false")
   }
+
+
 
   # Set default preferences for new users
   after_initialize :set_default_preferences, if: :new_record?

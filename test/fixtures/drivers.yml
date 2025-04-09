@@ -7,12 +7,12 @@
 # test/fixtures/users.yml
 regular_user:
   email: regular@example.com
-  password_digest: <%= BCrypt::Password.create("password123") %>
+  encrypted_password: <%= encrypted_devise_password('password123') %>
 
 
 driver:
   email: driver@example.com
-  password_digest: <%= BCrypt::Password.create("password123") %>
+  encrypted_password: <%= encrypted_devise_password('password123') %>
   first_name: "First"
   last_name: "User"
     #  fcm_token: ""

@@ -1,22 +1,28 @@
-# config/routes.rb
 Rails.application.routes.draw do
   root "routes#index"
-  get "stop_subscriptions/create"
-  get "stop_subscriptions/destroy"
-  get "route_subscriptions/create"
-  get "route_subscriptions/destroy"
-  get "users/new"
-  get "users/create"
-  get "users/show"
-  get "users/destroy"
-  # Existing web routes
+
   resources :routes, only: [ :index, :show ]
   resources :stops, only: [ :index, :show ]
-  resources :users, only: [ :new, :create, :show, :destroy ] do
-    resources :route_subscriptions, only: [ :create, :destroy ], param: :route_id
-    resources :stop_subscriptions, only: [ :create, :destroy ], param: :stop_id
+
+
+
+  devise_for :users, controllers: {
+    registrations: "devise/registrations",
+    sessions: "devise/sessions",
+    passwords: "devise/passwords",
+    confirmations: "devise/confirmations",
+    omniauth_callbacks: "users/omniauth_callbacks"
+  }
+
+  resources :users do
+    resources :route_subscriptions, only: [ :create, :destroy ]
+    resources :stop_subscriptions, only: [ :create, :destroy ]
   end
-  # API routes
+
+
+
+
+
   namespace :api do
     namespace :v1 do
       resources :routes, only: [ :index, :show ]
