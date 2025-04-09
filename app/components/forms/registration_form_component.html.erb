@@ -2,23 +2,24 @@
   <h2 class="text-2xl font-bold mb-2">Create Your Account</h2>
   <p class="text-sm text-gray-600 mb-6">Join PassioGo for real-time bus tracking and personalized notifications.</p>
 
+  <!-- Show Devise-style error messages -->
+  <%= render "devise/shared/error_messages", resource: resource %>
+
   <%= form_for(resource, as: resource_name, url: helpers.registration_path(resource_name)) do |f| %>
+    <div class="flex space-x-4">
+      <%= render Forms::TextInputComponent.new(
+        form: f,
+        field: :first_name,
+        label: "First Name",
+        placeholder: "First Name"
+      ) %>
 
-    <div class=" flex space-x-4">
-
-    <%= render Forms::TextInputComponent.new(
-      form: f,
-      field: :first_name,
-      label: "First Name",
-      placeholder: "First Name"
-    ) %>
-
-    <%= render Forms::TextInputComponent.new(
-      form: f,
-      field: :last_name,
-      label: "Last Name",
-      placeholder: "Last Name"
-    ) %>
+      <%= render Forms::TextInputComponent.new(
+        form: f,
+        field: :last_name,
+        label: "Last Name",
+        placeholder: "Last Name"
+      ) %>
     </div>
 
     <%= render Forms::TextInputComponent.new(
@@ -30,14 +31,19 @@
       autocomplete: "email"
     ) %>
 
-    <%= render Forms::TextInputComponent.new(
-      form: f,
-      field: :password,
-      label: "Password",
-      field_type: :password_field,
-      placeholder: "Password",
-      autocomplete: "new-password"
-    ) %>
+    <div class="mb-4">
+      <%= render Forms::TextInputComponent.new(
+        form: f,
+        field: :password,
+        label: "Password",
+        field_type: :password_field,
+        placeholder: "Password",
+        autocomplete: "new-password"
+      ) %>
+      <% if minimum_password_length %>
+        <p class="text-xs text-gray-500 mt-1">(<%= minimum_password_length %> characters minimum)</p>
+      <% end %>
+    </div>
 
     <%= render Forms::TextInputComponent.new(
       form: f,
@@ -48,15 +54,7 @@
       autocomplete: "new-password"
     ) %>
 
-
-<!--    <div class="mb-4 flex items-center">-->
-      <%#= f.check_box :terms, class: "mr-2" %>
-      <%#= f.label :terms, class: "text-gray-700" do %>
-<!--        I agree to the <%#= link_to "Terms & Conditions", "#", class: "text-blue-500 underline" %>-->
-      <%# end %>
-<!--    </div>-->
-
-    <div class="mb-6 bg-apple">
+    <div class="mb-6">
       <%= f.submit "Register", class: "w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150" %>
     </div>
   <% end %>
@@ -67,10 +65,6 @@
     <div class="flex-grow border-t border-gray-300"></div>
   </div>
 
-  <div class="flex justify-center space-x-4">
-    <%= link_to "Google", user_google_oauth2_omniauth_authorize_path, class: "bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" %>
-    <%= link_to "Facebook", user_facebook_omniauth_authorize_path, class: "bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded" %>
-  </div>
-
-  <%#= render "devise/shared/links" %>
+  <!-- Add Devise-style shared links (like login, forgot password, etc.) -->
+  <%= render "devise/shared/links" %>
 </div>
