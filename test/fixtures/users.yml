@@ -29,3 +29,10 @@ two:
   encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
   provider:
   uid:
+
+confirmed_user:
+  email: confirmed@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  first_name: Confirmed
+  last_name: User
+  # Do not include confirmed_at since you're not using confirmable (or set it if needed)
