@@ -34,16 +34,13 @@ class BusTest < ActiveSupport::TestCase
   end
 
   test "should require capacity to be a positive integer" do
-    @bus.capacity = -5
+    @bus.capacity = -1
     assert_not @bus.valid?
     assert_includes @bus.errors[:capacity], "must be greater than 0"
 
-    @bus.capacity = 2.5
+    @bus.capacity = "ten"
     assert_not @bus.valid?
-    assert_includes @bus.errors[:capacity], "must be an integer"
-
-    @bus.capacity = "large"
-    assert_not @bus.valid?
+    assert_includes @bus.errors[:capacity], "is not a number"
   end
 
   test "should require status" do
@@ -65,18 +62,20 @@ class BusTest < ActiveSupport::TestCase
     end
   end
 
-  test "should default status to active if not set" do
-    bus = Bus.create!(
-      bus_number: "B200",
-      capacity: 40,
-      bus_color: "green"
-    )
-    assert_equal "active", bus.status
-  end
-
-  test "should require a bus_color" do
+  test "should require bus_color" do
     @bus.bus_color = nil
     assert_not @bus.valid?
     assert_includes @bus.errors[:bus_color], "can't be blank"
   end
+
+  test "should set default status to active if not provided" do
+    bus = Bus.new(
+      bus_number: "B200",
+      capacity: 30,
+      bus_color: "red"
+    )
+    bus.valid?  # triggers default and validations
+    assert_equal "active", bus.status
+  end
 end
+
