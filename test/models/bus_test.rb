@@ -56,7 +56,7 @@ class BusTest < ActiveSupport::TestCase
   end
 
   test "should allow valid status values" do
-    ["active", "inactive", "maintenance"].each do |valid_status|
+    [ "active", "inactive", "maintenance" ].each do |valid_status|
       @bus.status = valid_status
       assert @bus.valid?, "#{valid_status} should be valid"
     end
