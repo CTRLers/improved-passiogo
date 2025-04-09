@@ -78,4 +78,3 @@ class BusTest < ActiveSupport::TestCase
     assert_equal "active", bus.status
   end
 end
-
