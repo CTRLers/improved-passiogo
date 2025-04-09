@@ -3,13 +3,13 @@ require "test_helper"
 
 class CurrentStopTest < ActiveSupport::TestCase
   test "should be optional for route" do
-    route = Route.create!(name: "Optional Stop Route")
+    route = routes(:one)
     assert_nil route.current_stop
   end
 
   test "can assign a valid stop as current_stop" do
-    route = Route.create!(name: "Route 1")
-    stop = Stop.create!(name: "Main", latitude: 0.0, longitude: 0.0, route: route, position: 1)
+    route = routes(:one)
+    stop = stops(:one)
     route.current_stop = stop
     assert route.save
     assert_equal stop, route.reload.current_stop
