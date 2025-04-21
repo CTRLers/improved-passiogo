@@ -17,11 +17,23 @@
           <h2 class="text-xl font-semibold mb-4">Stop Details</h2>
           <div class="space-y-2">
             <p><strong>Coordinates:</strong> <%= @stop["latitude"] %>, <%= @stop["longitude"] %></p>
-            <% if @stop["route_id"].present? %>
+            <% if @stop["routes"].present? && @stop["routes"].any? %>
+              <div>
+                <strong>Routes:</strong>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <% @stop["routes"].each do |route| %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                          style="background-color: <%= route['color'] %>25; color: <%= route['color'] %>; border: 1px solid <%= route['color'] %>">
+                      <%= link_to route['name'], route_path(route['id']), class: "hover:underline" %>
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            <% elsif @stop["route_id"].present? %>
               <p>
                 <strong>Route:</strong>
-                <%= link_to @stop["route_name"] || "Route #{@stop["route_id"]}", 
-                            route_path(@stop["route_id"]), 
+                <%= link_to @stop["route_name"] || "Route #{@stop["route_id"]}",
+                            route_path(@stop["route_id"]),
                             class: "text-blue-600 hover:text-blue-800 hover:underline" %>
               </p>
             <% end %>

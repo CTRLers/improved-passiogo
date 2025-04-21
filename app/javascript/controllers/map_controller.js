@@ -66,15 +66,30 @@ export default class extends Controller {
       // Get stop name
       const stopName = stopElement.querySelector('h3').textContent.trim();
 
-      // Get route name if available
-      const routeElement = stopElement.querySelector('.text-blue-600');
-      const routeName = routeElement ? routeElement.textContent.trim() : '';
+      // Get route tags if available
+      const routeTags = stopElement.querySelectorAll('.inline-flex.items-center.px-2');
+      let routeTagsHTML = '';
+
+      if (routeTags.length > 0) {
+        routeTagsHTML = '<div class="mt-2 mb-2 flex flex-wrap gap-1">';
+        routeTags.forEach(tag => {
+          // Clone the tag to preserve its styling
+          routeTagsHTML += tag.outerHTML;
+        });
+        routeTagsHTML += '</div>';
+      } else {
+        // Fallback to legacy route display
+        const routeElement = stopElement.querySelector('.text-blue-600');
+        if (routeElement) {
+          routeTagsHTML = `<p class="text-sm text-blue-600 mb-2">${routeElement.textContent.trim()}</p>`;
+        }
+      }
 
       // Create popup content
       const popupContent = document.createElement('div');
       popupContent.innerHTML = `
         <h3 class="text-lg font-semibold">${stopName}</h3>
-        ${routeName ? `<p class="text-sm text-blue-600">${routeName}</p>` : ''}
+        ${routeTagsHTML}
         <a href="/stops/${stopElement.dataset.stopId}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
       `;
 
@@ -82,9 +97,21 @@ export default class extends Controller {
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setDOMContent(popupContent);
 
+      // Determine marker color based on number of routes
+      let markerColor = '#6B7280'; // Default gray
+      const routeCount = routeTags.length;
+
+      if (routeCount > 3) {
+        markerColor = '#EF4444'; // Red for stops with many routes (4+)
+      } else if (routeCount > 1) {
+        markerColor = '#3B82F6'; // Blue for stops with multiple routes (2-3)
+      } else if (routeCount === 1) {
+        markerColor = '#10B981'; // Green for stops with one route
+      }
+
       // Create marker
       const marker = new mapboxgl.Marker({
-        color: routeName ? '#3B82F6' : '#6B7280' // Blue for stops with routes, gray for others
+        color: markerColor
       })
         .setLngLat([lng, lat])
         .setPopup(popup)

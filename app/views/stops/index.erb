@@ -13,9 +13,17 @@
         </div>
       </div>
 
+      <select id="route-filter" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="all">All Routes</option>
+        <% routes = @stops.flat_map { |s| s['routes'] || [] }.uniq { |r| r['id'] }.sort_by { |r| r['name'] } %>
+        <% routes.each do |route| %>
+          <option value="<%= route['id'] %>"><%= route['name'] %></option>
+        <% end %>
+      </select>
+
       <select id="stop-sort" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="name">Sort by Name</option>
-        <option value="route">Sort by Route</option>
+        <option value="routes">Sort by Number of Routes</option>
         <option value="proximity">Sort by Proximity</option>
       </select>
 
@@ -43,7 +51,17 @@
           <div class="stop-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-stop-id="<%= stop['id'] %>">
             <div class="p-4 border-b">
               <h3 class="text-lg font-semibold text-gray-900 truncate"><%= stop['name'] %></h3>
-              <% if stop['route_name'].present? %>
+
+              <% if stop['routes'].present? && stop['routes'].any? %>
+                <div class="mt-2 flex flex-wrap gap-1">
+                  <% stop['routes'].each do |route| %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                          style="background-color: <%= route['color'] %>25; color: <%= route['color'] %>; border: 1px solid <%= route['color'] %>">
+                      <%= link_to route['name'], route_path(route['id']), class: "hover:underline" %>
+                    </span>
+                  <% end %>
+                </div>
+              <% elsif stop['route_name'].present? %>
                 <p class="text-sm text-blue-600">Route: <%= stop['route_name'] %></p>
               <% end %>
             </div>
@@ -76,6 +94,29 @@
       <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div data-controller="map" class="h-[600px]">
           <div id="map" class="w-full h-full"></div>
+        </div>
+
+        <!-- Map Legend -->
+        <div class="p-4 border-t">
+          <h3 class="text-lg font-semibold mb-2">Map Legend</h3>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center">
+              <div class="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
+              <span>4+ Routes</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
+              <span>2-3 Routes</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+              <span>1 Route</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-4 h-4 rounded-full bg-gray-500 mr-2"></div>
+              <span>No Routes</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -138,10 +179,12 @@
           const nameA = a.querySelector('h3').textContent.toLowerCase();
           const nameB = b.querySelector('h3').textContent.toLowerCase();
           return nameA.localeCompare(nameB);
-        } else if (sortBy === 'route') {
-          const routeA = a.querySelector('.text-blue-600')?.textContent.toLowerCase() || 'zzz';
-          const routeB = b.querySelector('.text-blue-600')?.textContent.toLowerCase() || 'zzz';
-          return routeA.localeCompare(routeB);
+        } else if (sortBy === 'routes') {
+          // Count the number of route tags
+          const routeCountA = a.querySelectorAll('.inline-flex.items-center.px-2').length;
+          const routeCountB = b.querySelectorAll('.inline-flex.items-center.px-2').length;
+          // Sort by number of routes (descending)
+          return routeCountB - routeCountA;
         }
         // For proximity, we would need user's location - defaulting to name sort
         return 0;
@@ -151,15 +194,43 @@
       visibleCards.forEach(card => stopGrid.appendChild(card));
     };
 
-    // Search event listener
-    searchInput.addEventListener('input', function() {
-      const searchTerm = this.value.toLowerCase();
+    // Route filter
+    const routeFilter = document.getElementById('route-filter');
+
+    // Function to filter stops by route
+    const filterByRoute = () => {
+      const routeId = routeFilter.value;
+      const searchTerm = searchInput.value.toLowerCase();
 
       stopCards.forEach(function(card) {
         const stopName = card.querySelector('h3').textContent.toLowerCase();
-        const routeName = card.querySelector('.text-blue-600')?.textContent.toLowerCase() || '';
 
-        if (stopName.includes(searchTerm) || routeName.includes(searchTerm)) {
+        // Get all route tags
+        const routeTags = card.querySelectorAll('.inline-flex.items-center.px-2');
+        let routeText = '';
+        let hasRoute = routeId === 'all';
+
+        routeTags.forEach(tag => {
+          const tagText = tag.textContent.toLowerCase();
+          routeText += tagText + ' ';
+
+          // Check if this tag contains the selected route
+          if (routeId !== 'all') {
+            const tagLink = tag.querySelector('a');
+            if (tagLink && tagLink.getAttribute('href') === `/routes/${routeId}`) {
+              hasRoute = true;
+            }
+          }
+        });
+
+        // Also check the legacy route text if present
+        const legacyRouteElement = card.querySelector('.text-blue-600');
+        if (legacyRouteElement) {
+          routeText += legacyRouteElement.textContent.toLowerCase();
+        }
+
+        // Show card if it matches both the search term and route filter
+        if ((stopName.includes(searchTerm) || routeText.includes(searchTerm)) && hasRoute) {
           card.style.display = '';
         } else {
           card.style.display = 'none';
@@ -168,7 +239,13 @@
 
       // Re-sort after filtering
       sortCards();
-    });
+    };
+
+    // Search event listener
+    searchInput.addEventListener('input', filterByRoute);
+
+    // Route filter event listener
+    routeFilter.addEventListener('change', filterByRoute);
 
     // Sort event listener
     stopSort.addEventListener('change', sortCards);
