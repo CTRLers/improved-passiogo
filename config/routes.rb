@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   root "routes#index"
 
-  resources :routes, only: [ :index, :show ]
+  resources :routes, only: [ :index, :show ] do
+    post 'test_notification', on: :collection
+  end
   resources :stops, only: [ :index, :show ]
 
 
@@ -33,5 +35,13 @@ Rails.application.routes.draw do
         end
       end
     end
+  end
+
+  resources :notifications, only: [:index] do
+    post :mark_as_read, on: :member
+    post :mark_as_unread, on: :member
+    post :mark_all_as_read, on: :collection
+    post :test, on: :collection
+    get :test_page, on: :collection
   end
 end

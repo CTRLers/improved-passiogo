@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :stop_subscriptions, dependent: :destroy
   has_many :subscribed_routes, through: :route_subscriptions, source: :route
   has_many :subscribed_stops, through: :stop_subscriptions, source: :stop
+  has_many :user_notifications, dependent: :destroy
 
   # Notification preferences
   # This assumes your users table has a jsonb/json column named 'preferences'

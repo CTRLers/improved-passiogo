@@ -26,6 +26,20 @@
   </head>
 
   <body>
+    <%# if user_signed_in? %>
+      <%#= render NotificationBannerComponent.new(user: current_user) %>
+
+     <!-- Notification Test Button (only visible in development) -->
+      <%# if Rails.env.development? %>
+<!--        <div class="fixed bottom-20 right-5 z-50">-->
+<!--          <button onclick="window.testNotification()"-->
+<!--                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
+<!--            Test Notification-->
+<!--          </button>-->
+<!--        </div>-->
+      <%# end %>
+    <%# end %>
+
     <%= render(NavigationComponent.new(nav: @nav)) %>
     <%#= render SidebarComponent.new() %>
 

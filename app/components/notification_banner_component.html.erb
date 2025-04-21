@@ -1,0 +1,27 @@
+<div data-controller="notification-banner" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-300 ease-in-out shadow-lg">
+  <div data-notification-banner-target="container" class="w-full">
+    <div data-notification-banner-target="content" class="flex items-center space-x-3 p-4 mx-auto max-w-screen-xl">
+      <div data-notification-banner-target="icon"></div>
+      <div class="flex-grow">
+        <h4 data-notification-banner-target="title" class="font-bold text-lg"></h4>
+        <p data-notification-banner-target="message" class="text-sm"></p>
+      </div>
+      <button data-action="click->notification-banner#hide" class="ml-auto text-gray-500 hover:text-gray-700 p-1">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <% if Rails.env.development? %>
+  <!-- Debug panel in development mode -->
+  <div class="bg-gray-800 text-white text-xs p-1 flex justify-between items-center">
+    <span>Notification Banner Component</span>
+    <button onclick="window.testNotification && window.testNotification()"
+            class="bg-blue-500 hover:bg-blue-700 text-white text-xs py-1 px-2 rounded">
+      Test Banner
+    </button>
+  </div>
+  <% end %>
+</div>

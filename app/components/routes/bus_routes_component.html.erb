@@ -1,6 +1,14 @@
 
-
+<%= render NotificationBannerComponent.new user: helpers.current_user %>
+<!-- Add this button somewhere appropriate in your view -->
+<!--<button data-controller="notification-test"-->
+<!--        data-action="click->notification-test#trigger"-->
+<!--        class="bg-blue-500 text-white px-4 py-2 rounded min-w-screen">-->
+<!--  Test Notification-->
+<!--</button>-->
 <div class="flex min-h-screen">
+
+
   <!-- Left Sidebar (Filters and Tabs) -->
   <aside class="w-64 bg-gray-100 p-4 space-y-4">
     <input type="text" placeholder="Search Route Name or Number…" class="w-full p-2 border rounded" />
@@ -58,8 +66,10 @@
     </div>
 
 
-    <!-- Notification Floating Button -->
-    <button class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
+    <!-- Notification Subscribe Button -->
+    <button data-controller="route-subscription"
+            data-action="click->route-subscription#toggle"
+            class="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
       🔔
     </button>
   </main>

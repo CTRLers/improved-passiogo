@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_034914) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_10_161920) do
   create_table "buses", force: :cascade do |t|
     t.string "bus_number", null: false
     t.integer "capacity", null: false
@@ -74,6 +74,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_034914) do
     t.index ["route_id"], name: "index_stops_on_route_id"
   end
 
+  create_table "user_notifications", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "notification_type", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.json "data", default: {}
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notification_type"], name: "index_user_notifications_on_notification_type"
+    t.index ["user_id", "read_at"], name: "index_user_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_user_notifications_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "first_name"
@@ -99,4 +113,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_034914) do
   add_foreign_key "stop_subscriptions", "stops"
   add_foreign_key "stop_subscriptions", "users"
   add_foreign_key "stops", "routes"
+  add_foreign_key "user_notifications", "users"
 end

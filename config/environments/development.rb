@@ -79,4 +79,7 @@ Rails.application.configure do
     authentication: "plain",
     enable_starttls_auto: true
   }
+
+  # Disable request forgery protection for WebSocket connections
+  config.action_cable.disable_request_forgery_protection = true
 end

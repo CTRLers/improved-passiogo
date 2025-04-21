@@ -16,3 +16,17 @@ application.register("hello", HelloController)
 import MapController from "./map_controller"
 application.register("map", MapController)
 
+import NotificationBannerController from "./notification_banner_controller"
+application.register("notification-banner", NotificationBannerController)
+
+import NotificationController from "./notification_controller"
+application.register("notification", NotificationController)
+
+import NotificationTesrController from "./notification_tesr_controller"
+application.register("notification-tesr", NotificationTesrController)
+
+import NotificationTestController from "./notification_test_controller"
+application.register("notification-test", NotificationTestController)
+
+import RouteSubscriptionController from "./route_subscription_controller"
+application.register("route-subscription", RouteSubscriptionController)

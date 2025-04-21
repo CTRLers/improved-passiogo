@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notification Test Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button, .button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    
+    button:hover, .button:hover {
+      background-color: #45a049;
+    }
+    
+    .button-secondary {
+      background-color: #2196F3;
+    }
+    
+    .button-secondary:hover {
+      background-color: #0b7dda;
+    }
+    
+    .button-warning {
+      background-color: #ff9800;
+    }
+    
+    .button-warning:hover {
+      background-color: #e68a00;
+    }
+    
+    .button-danger {
+      background-color: #f44336;
+    }
+    
+    .button-danger:hover {
+      background-color: #da190b;
+    }
+    
+    .notification-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .notification-banner.show {
+      transform: translateY(0);
+    }
+    
+    .notification-content {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    
+    .notification-content.info {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+    
+    .notification-content.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .notification-content.warning {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .notification-content.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .notification-body {
+      flex-grow: 1;
+      margin: 0 15px;
+    }
+    
+    .notification-title {
+      font-weight: bold;
+      margin: 0 0 5px 0;
+    }
+    
+    .notification-message {
+      margin: 0;
+    }
+    
+    .close-button {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      padding: 0;
+      font-size: 20px;
+    }
+    
+    .debug-panel {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    
+    .debug-panel h2 {
+      margin-top: 0;
+    }
+    
+    .debug-panel pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Notification Banner Component -->
+  <% if user_signed_in? %>
+    <%= render NotificationBannerComponent.new(user: current_user) %>
+  <% else %>
+    <!-- Fallback notification banner for non-logged in users -->
+    <div id="notification-banner" class="notification-banner">
+      <div id="notification-content" class="notification-content">
+        <div class="notification-body">
+          <h3 id="notification-title" class="notification-title"></h3>
+          <p id="notification-message" class="notification-message"></p>
+        </div>
+        <button id="close-button" class="close-button">&times;</button>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="container">
+    <h1>Notification Test Page</h1>
+    
+    <% if user_signed_in? %>
+      <p>Logged in as: <%= current_user.email %></p>
+      
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" value="Test Notification">
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="3">This is a test notification message.</textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="info">Info</option>
+          <option value="announcement">Announcement</option>
+          <option value="delay">Delay</option>
+          <option value="service_disruption">Service Disruption</option>
+          <option value="alert">Alert</option>
+          <option value="success">Success</option>
+        </select>
+      </div>
+      
+      <div>
+        <button id="test-direct" class="button">Test Direct</button>
+        <button id="test-event" class="button button-secondary">Test Event</button>
+        <button id="test-controller" class="button button-warning">Test Controller</button>
+        <%= link_to "Test Server", test_notifications_path, method: :post, class: "button button-danger", data: { turbo_method: :post } %>
+      </div>
+      
+      <div class="debug-panel">
+        <h2>Debug Information</h2>
+        <div id="debug-output"></div>
+        
+        <h3>Connection Status</h3>
+        <div id="connection-status">Checking connection status...</div>
+        
+        <h3>JavaScript Console</h3>
+        <p>Open your browser's developer tools (F12) to view console output.</p>
+      </div>
+    <% else %>
+      <p>You need to be logged in to test notifications.</p>
+      <%= link_to "Log In", new_user_session_path, class: "button" %>
+    <% end %>
+  </div>
+  
+  <% if user_signed_in? %>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const debugOutput = document.getElementById('debug-output');
+        const connectionStatus = document.getElementById('connection-status');
+        
+        // Log to debug panel
+        function log(message) {
+          const time = new Date().toLocaleTimeString();
+          const logEntry = document.createElement('div');
+          logEntry.innerHTML = `<strong>${time}</strong>: ${message}`;
+          debugOutput.appendChild(logEntry);
+          console.log(message);
+        }
+        
+        // Check connection status
+        function checkConnectionStatus() {
+          if (window.notificationChannel) {
+            connectionStatus.innerHTML = '<span style="color: green;">✓ Connected to NotificationsChannel</span>';
+          } else {
+            connectionStatus.innerHTML = '<span style="color: red;">✗ Not connected to NotificationsChannel</span>';
+          }
+        }
+        
+        // Test direct notification
+        document.getElementById('test-direct').addEventListener('click', function() {
+          const title = document.getElementById('title').value;
+          const message = document.getElementById('message').value;
+          const type = document.getElementById('type').value;
+          
+          log(`Testing direct notification: ${title}`);
+          
+          // Create a custom event
+          const event = new CustomEvent('notification:received', {
+            detail: {
+              type: type,
+              title: title,
+              body: message,
+              data: { test: true, method: 'direct' }
+            }
+          });
+          
+          // Dispatch the event
+          window.dispatchEvent(event);
+          log('Dispatched notification:received event');
+        });
+        
+        // Test event notification
+        document.getElementById('test-event').addEventListener('click', function() {
+          const title = document.getElementById('title').value;
+          const message = document.getElementById('message').value;
+          const type = document.getElementById('type').value;
+          
+          log(`Testing event notification: ${title}`);
+          
+          // Create a custom event
+          const event = new CustomEvent('custom:notification', {
+            detail: {
+              type: type,
+              title: title,
+              message: message,
+              data: { test: true, method: 'event' }
+            }
+          });
+          
+          // Dispatch the event
+          window.dispatchEvent(event);
+          log('Dispatched custom:notification event');
+        });
+        
+        // Test controller notification
+        document.getElementById('test-controller').addEventListener('click', function() {
+          const title = document.getElementById('title').value;
+          const message = document.getElementById('message').value;
+          const type = document.getElementById('type').value;
+          
+          log(`Testing controller notification: ${title}`);
+          
+          if (window.notificationChannel) {
+            window.notificationChannel.sendTestNotification();
+            log('Sent test notification via channel');
+          } else {
+            log('Error: Notification channel not connected');
+          }
+        });
+        
+        // Check connection status every 2 seconds
+        setInterval(checkConnectionStatus, 2000);
+        
+        // Initial check
+        setTimeout(checkConnectionStatus, 1000);
+        
+        // Log initial status
+        log('Notification test page loaded');
+        
+        // Add listener for notification:received event
+        window.addEventListener('notification:received', function(event) {
+          log(`Received notification: ${event.detail.title}`);
+        });
+      });
+    </script>
+  <% end %>
+</body>
+</html>

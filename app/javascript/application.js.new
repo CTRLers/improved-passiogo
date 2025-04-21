@@ -10,9 +10,9 @@ import "./direct_banner_test"
 
 // Import channels last to avoid blocking other functionality if it fails
 try {
-    import("./channels").catch(error => {
-        console.error("Error loading channels:", error);
-    });
+  import("./channels").catch(error => {
+    console.error("Error loading channels:", error);
+  });
 } catch (error) {
-    console.error("Error importing channels:", error);
+  console.error("Error importing channels:", error);
 }
