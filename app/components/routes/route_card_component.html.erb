@@ -16,7 +16,13 @@
         <strong>Stops:</strong>
         <ul>
           <% stops.each do |stop| %>
-            <li><%= stop["name"] %></li>
+            <li>
+              <% if stop["id"].present? %>
+                <%= link_to stop["name"], stop_path(stop["id"]), class: "text-blue-600 hover:text-blue-800 hover:underline" %>
+              <% else %>
+                <%= stop["name"] %>
+              <% end %>
+            </li>
           <% end %>
         </ul>
       </div>

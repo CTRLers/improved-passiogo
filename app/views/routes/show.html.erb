@@ -1,0 +1,94 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to routes_path, class: "text-blue-600 hover:text-blue-800" do %>
+      <i class="fas fa-arrow-left mr-2"></i> Back to Routes
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-gray-100 px-6 py-4 border-b">
+      <h1 class="text-2xl font-bold"><%= @route["name"] %></h1>
+    </div>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 class="text-xl font-semibold mb-4">Route Details</h2>
+          <div class="space-y-2">
+            <p><strong>ID:</strong> <%= @route["id"] %></p>
+            <% if @route["start_time"].present? && @route["end_time"].present? %>
+              <p><strong>Operating Hours:</strong> <%= @route["start_time"] %> – <%= @route["end_time"] %></p>
+            <% end %>
+            <% if @route["frequency"].present? %>
+              <p><strong>Frequency:</strong> Every <%= @route["frequency"] %> minutes</p>
+            <% end %>
+            <p><strong>Coordinates:</strong> <%= @route["latitude"] %>, <%= @route["longitude"] %></p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-4">Status</h2>
+          <div class="space-y-2">
+            <p>
+              <strong>Status:</strong>
+              <% if @route["on_time"] %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  🟢 On Time
+                </span>
+              <% else %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                  🔴 Delayed by <%= @route["delay"] %> mins
+                </span>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold mb-4">Stops</h2>
+        <% if @stops.present? %>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coordinates</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrival Time</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @stops.each do |stop| %>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900"><%= stop["name"] %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-500"><%= stop["latitude"] %>, <%= stop["longitude"] %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-500"><%= stop["time"] || "TBD" %></div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <%= link_to "View Details", stop_path(stop["id"]), class: "text-blue-600 hover:text-blue-900" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p class="text-gray-500">No stops available for this route.</p>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold mb-4">Map</h2>
+        <div data-controller="map" class="h-96 rounded-lg border">
+          <div id="map" class="w-full h-full rounded-lg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -56,8 +56,15 @@
             <p><strong>Frequency:</strong> Every <%= route.frequency %> mins</p>
             <p><strong>Stops:</strong> <%= route.stops.join(" → ") %></p>
             <div class="timeline mt-2 space-y-1">
-              <% route.timeline.each do |arrival| %>
-                <span class="block text-sm"><%= arrival.time %> - <%= arrival.stop_name %></span>
+              <% route.timeline.each_with_index do |arrival, index| %>
+                <div class="block text-sm">
+                  <%= arrival.time %> -
+                  <% if arrival.stop_id.present? %>
+                    <%= link_to arrival.stop_name, stop_path(arrival.stop_id), class: "text-blue-600 hover:text-blue-800 hover:underline" %>
+                  <% else %>
+                    <%= arrival.stop_name %>
+                  <% end %>
+                </div>
               <% end %>
             </div>
           </div>

@@ -16,6 +16,9 @@ application.register("hello", HelloController)
 import MapController from "./map_controller"
 application.register("map", MapController)
 
+import StopSubscriptionController from "./stop_subscription_controller"
+application.register("stop-subscription", StopSubscriptionController)
+
 import NotificationBannerController from "./notification_banner_controller"
 application.register("notification-banner", NotificationBannerController)
 

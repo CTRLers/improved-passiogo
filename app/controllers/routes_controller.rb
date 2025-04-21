@@ -12,7 +12,11 @@ class RoutesController < ApplicationController
       # Build a timeline based on stops data.
       # Here we're assuming each stop includes a "time" field; adjust as needed.
       timeline = stops_data.map do |stop|
-        OpenStruct.new(time: stop["time"] || "TBD", stop_name: stop["name"])
+        OpenStruct.new(
+          time: stop["time"] || "TBD",
+          stop_name: stop["name"],
+          stop_id: stop["id"]
+        )
       end
 
       # Expand the route hash with the additional fields using OpenStruct
@@ -47,7 +51,7 @@ class RoutesController < ApplicationController
       title: "Route Delay",
       body: "Route #{@route.name} is delayed by #{delay_minutes} minutes",
       data: {
-      
+
       }
     )
 
@@ -62,7 +66,7 @@ class RoutesController < ApplicationController
       body: "This is a test notification message",
       data: {}  # Remove route_id since it's not needed for test
     )
-    
+
     head :ok
   end
 end

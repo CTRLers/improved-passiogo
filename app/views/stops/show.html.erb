@@ -1,0 +1,79 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to :back, class: "text-blue-600 hover:text-blue-800" do %>
+      <i class="fas fa-arrow-left mr-2"></i> Go Back
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-gray-100 px-6 py-4 border-b">
+      <h1 class="text-2xl font-bold"><%= @stop["name"] %></h1>
+      <p class="text-gray-600">Stop ID: <%= @stop_id %></p>
+    </div>
+
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h2 class="text-xl font-semibold mb-4">Stop Details</h2>
+          <div class="space-y-2">
+            <p><strong>Coordinates:</strong> <%= @stop["latitude"] %>, <%= @stop["longitude"] %></p>
+            <% if @stop["route_id"].present? %>
+              <p>
+                <strong>Route:</strong>
+                <%= link_to @stop["route_name"] || "Route #{@stop["route_id"]}", 
+                            route_path(@stop["route_id"]), 
+                            class: "text-blue-600 hover:text-blue-800 hover:underline" %>
+              </p>
+            <% end %>
+            <% if @stop["time"].present? %>
+              <p><strong>Scheduled Arrival:</strong> <%= @stop["time"] %></p>
+            <% end %>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-4">Status</h2>
+          <div class="space-y-2">
+            <% if @stop["status"].present? %>
+              <p>
+                <strong>Status:</strong>
+                <% if @stop["status"] == "on_time" %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    🟢 On Time
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    🔴 Delayed
+                  </span>
+                <% end %>
+              </p>
+            <% else %>
+              <p><strong>Status:</strong> Not available</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold mb-4">Map</h2>
+        <div data-controller="map" class="h-96 rounded-lg border">
+          <div id="map" class="w-full h-full rounded-lg"></div>
+        </div>
+      </div>
+
+      <% if user_signed_in? %>
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold mb-4">Notifications</h2>
+          <div class="flex items-center space-x-4">
+            <button data-controller="stop-subscription"
+                    data-stop-subscription-id="<%= @stop_id %>"
+                    data-action="stop-subscription#toggle"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <span>Subscribe to Stop Updates</span>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
