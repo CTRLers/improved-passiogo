@@ -1,7 +1,179 @@
-<h1>Stops</h1>
+<div class="container mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Bus Stops</h1>
 
-<ul>
-  <% @stops.each do |stop| %>
-    <li><strong><%= stop['name'] %></strong> - Lat: <%= stop['latitude'] %>, Long: <%= stop['longitude'] %></li>
-  <% end %>
-</ul>
+    <div class="mt-4 md:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+      <div class="relative">
+        <input type="text" id="stop-search" placeholder="Search stops..."
+               class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div class="absolute left-3 top-2.5 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <select id="stop-sort" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="name">Sort by Name</option>
+        <option value="route">Sort by Route</option>
+        <option value="proximity">Sort by Proximity</option>
+      </select>
+
+      <div class="flex space-x-2">
+        <button id="view-list" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <button id="view-map" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View toggle content -->
+  <div class="mt-6">
+    <!-- List View (default) -->
+    <div id="list-view" class="block">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @stops.each do |stop| %>
+          <div class="stop-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300" data-stop-id="<%= stop['id'] %>">
+            <div class="p-4 border-b">
+              <h3 class="text-lg font-semibold text-gray-900 truncate"><%= stop['name'] %></h3>
+              <% if stop['route_name'].present? %>
+                <p class="text-sm text-blue-600">Route: <%= stop['route_name'] %></p>
+              <% end %>
+            </div>
+            <div class="p-4 space-y-2">
+              <p class="text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                </svg>
+                <%= stop['latitude'].to_f.round(6) %>, <%= stop['longitude'].to_f.round(6) %>
+              </p>
+              <% if stop['time'].present? %>
+                <p class="text-sm text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                  </svg>
+                  Next arrival: <%= stop['time'] %>
+                </p>
+              <% end %>
+            </div>
+            <div class="px-4 py-3 bg-gray-50 text-right">
+              <%= link_to "View Details", stop_path(stop['id']), class: "text-blue-600 hover:text-blue-800 font-medium" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Map View (hidden by default) -->
+    <div id="map-view" class="hidden">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div data-controller="map" class="h-[600px]">
+          <div id="map" class="w-full h-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // View toggle functionality
+    const listViewBtn = document.getElementById('view-list');
+    const mapViewBtn = document.getElementById('view-map');
+    const listView = document.getElementById('list-view');
+    const mapView = document.getElementById('map-view');
+
+    listViewBtn.addEventListener('click', function() {
+      listView.classList.remove('hidden');
+      listView.classList.add('block');
+      mapView.classList.add('hidden');
+      mapView.classList.remove('block');
+
+      listViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
+      listViewBtn.classList.add('bg-blue-600', 'text-white');
+      mapViewBtn.classList.remove('bg-blue-600', 'text-white');
+      mapViewBtn.classList.add('bg-gray-200', 'text-gray-700');
+    });
+
+    mapViewBtn.addEventListener('click', function() {
+      mapView.classList.remove('hidden');
+      mapView.classList.add('block');
+      listView.classList.add('hidden');
+      listView.classList.remove('block');
+
+      mapViewBtn.classList.remove('bg-gray-200', 'text-gray-700');
+      mapViewBtn.classList.add('bg-blue-600', 'text-white');
+      listViewBtn.classList.remove('bg-blue-600', 'text-white');
+      listViewBtn.classList.add('bg-gray-200', 'text-gray-700');
+
+      // Trigger map resize event if needed
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('stop-search');
+    const stopCards = document.querySelectorAll('.stop-card');
+    const stopSort = document.getElementById('stop-sort');
+    const stopGrid = document.querySelector('#list-view .grid');
+
+    // Function to get all visible cards
+    const getVisibleCards = () => {
+      return Array.from(stopCards).filter(card => card.style.display !== 'none');
+    };
+
+    // Function to sort cards
+    const sortCards = () => {
+      const sortBy = stopSort.value;
+      const visibleCards = getVisibleCards();
+
+      visibleCards.sort((a, b) => {
+        if (sortBy === 'name') {
+          const nameA = a.querySelector('h3').textContent.toLowerCase();
+          const nameB = b.querySelector('h3').textContent.toLowerCase();
+          return nameA.localeCompare(nameB);
+        } else if (sortBy === 'route') {
+          const routeA = a.querySelector('.text-blue-600')?.textContent.toLowerCase() || 'zzz';
+          const routeB = b.querySelector('.text-blue-600')?.textContent.toLowerCase() || 'zzz';
+          return routeA.localeCompare(routeB);
+        }
+        // For proximity, we would need user's location - defaulting to name sort
+        return 0;
+      });
+
+      // Remove all cards and re-append in sorted order
+      visibleCards.forEach(card => stopGrid.appendChild(card));
+    };
+
+    // Search event listener
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+
+      stopCards.forEach(function(card) {
+        const stopName = card.querySelector('h3').textContent.toLowerCase();
+        const routeName = card.querySelector('.text-blue-600')?.textContent.toLowerCase() || '';
+
+        if (stopName.includes(searchTerm) || routeName.includes(searchTerm)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Re-sort after filtering
+      sortCards();
+    });
+
+    // Sort event listener
+    stopSort.addEventListener('change', sortCards);
+
+    // Initial sort
+    sortCards();
+  });
+</script>
