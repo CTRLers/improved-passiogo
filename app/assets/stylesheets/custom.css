@@ -1,0 +1,13 @@
+/* Custom styles to fix layout issues */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Ensure navbar is flush with the top of the screen */
+.navbar-fixed-top {
+    margin-top: 0;
+    padding-top: 0;
+}
