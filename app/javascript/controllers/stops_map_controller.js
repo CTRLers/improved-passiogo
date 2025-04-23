@@ -35,6 +35,7 @@ export default class extends Controller {
     this.map = new this.mapClass(this.mapTarget, {
       center,
       zoom: 14,
+      mapId: this.nameValue
     })
     console.log("loaded map")
     // place your marker at the very center
