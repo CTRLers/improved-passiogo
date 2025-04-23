@@ -14,7 +14,7 @@ module ImprovedPassiogo
 
     require "ostruct"
 
-
+    config.hosts << "passiogo2.eastus.cloudapp.azure.com"
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
