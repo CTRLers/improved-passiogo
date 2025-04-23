@@ -43,7 +43,7 @@ export default class extends Controller {
     //   position: center,
     //   title:    this.nameValue,
     // })
-    new google.maps.marker.AdvancedMarkerElement({
+    const marker = new google.maps.marker.AdvancedMarkerElement({
       map:      this.map,
       position: center,
       title:    this.nameValue,
