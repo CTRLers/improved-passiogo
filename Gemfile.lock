@@ -257,6 +257,9 @@ GEM
       racc
     pp (0.6.2)
       prettyprint
+    prerender_rails (1.6.1)
+      activesupport
+      rack
     prettyprint (0.2.0)
     prism (1.4.0)
     propshaft (1.1.0)
@@ -481,6 +484,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-google-oauth2
+  prerender_rails
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)

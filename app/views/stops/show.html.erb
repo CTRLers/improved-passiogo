@@ -68,9 +68,18 @@
 
       <div class="mt-8">
         <h2 class="text-xl font-semibold mb-4">Map</h2>
-        <div data-controller="map" class="h-96 rounded-lg border">
-          <div id="map" class="w-full h-full rounded-lg"></div>
+        <div
+          data-controller="stops-map"
+          data-stops-map-api-key-value="<%= ENV['GOOGLE_MAPS_API_KEY'] %>"
+          data-stops-map-lat-value="<%= @stop['latitude'] %>"
+          data-stops-map-lng-value="<%= @stop['longitude'] %>"
+          data-stops-map-name-value=""<%= @stop['name'] %>""
+        >
+
+        <div data-stops-map-target="map"
+             class="h-96 rounded-lg border">
         </div>
+      </div>s
       </div>
 
       <% if user_signed_in? %>

@@ -7,7 +7,7 @@
         <input type="text" id="stop-search" placeholder="Search stops..."
                class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <div class="absolute left-3 top-2.5 text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
           </svg>
         </div>
@@ -81,6 +81,18 @@
                 </p>
               <% end %>
             </div>
+<!--            <div-->
+<!--              data-controller="stops-map"-->
+<!--              data-stops-map-api-key-value="<%#= ENV['GOOGLE_MAPS_API_KEY'] %>"-->
+<!--              data-stops-map-lat-value="<%#= stop['latitude'] %>"-->
+<!--              data-stops-map-lng-value="<%#= stop['longitude'] %>"-->
+<!--              data-stops-map-name-value=""<%#= stop['name'] %>""-->
+<!--            >-->
+<!--              <div data-stops-map-target="map"-->
+<!--                   class="h-64 w-full rounded-lg border">-->
+<!--              </div>-->
+<!--            </div>-->
+
             <div class="px-4 py-3 bg-gray-50 text-right">
               <%= link_to "View Details", stop_path(stop['id']), class: "text-blue-600 hover:text-blue-800 font-medium" %>
             </div>
@@ -122,6 +134,8 @@
     </div>
   </div>
 </div>
+<head>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -254,3 +268,5 @@
     sortCards();
   });
 </script>
+
+</head>

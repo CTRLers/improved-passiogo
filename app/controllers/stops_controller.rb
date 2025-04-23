@@ -4,6 +4,7 @@ class StopsController < ApplicationController
     # Get all stops
     @stops = ExternalApiService.get_stops
 
+
     # Get all routes
     routes = ExternalApiService.get_routes
 

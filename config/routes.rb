@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "routes#index"
 
-  resources :routes, only: [ :index, :show ] do
+  resources :routes, :stops, only: [ :index, :show ] do
     post 'test_notification', on: :collection
   end
   resources :stops, only: [ :index, :show ]

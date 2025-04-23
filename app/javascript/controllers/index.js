@@ -16,9 +16,6 @@ application.register("hello", HelloController)
 import MapController from "./map_controller"
 application.register("map", MapController)
 
-import StopSubscriptionController from "./stop_subscription_controller"
-application.register("stop-subscription", StopSubscriptionController)
-
 import NotificationBannerController from "./notification_banner_controller"
 application.register("notification-banner", NotificationBannerController)
 
@@ -33,3 +30,12 @@ application.register("notification-test", NotificationTestController)
 
 import RouteSubscriptionController from "./route_subscription_controller"
 application.register("route-subscription", RouteSubscriptionController)
+
+import StopSubscriptionController from "./stop_subscription_controller"
+application.register("stop-subscription", StopSubscriptionController)
+
+import StopsController from "./stops_controller"
+application.register("stops", StopsController)
+
+import StopsMapController from "./stops_map_controller"
+application.register("stops-map", StopsMapController)
