@@ -1,6 +1,6 @@
 class NotificationsController < ApplicationController
-  before_action :authenticate_user!, except: [:test_page]
-  before_action :set_notification, only: [:mark_as_read, :mark_as_unread]
+  before_action :authenticate_user!, except: [ :test_page ]
+  before_action :set_notification, only: [ :mark_as_read, :mark_as_unread ]
 
   def index
     @notifications = current_user.user_notifications

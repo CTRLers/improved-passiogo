@@ -50,9 +50,7 @@ class RoutesController < ApplicationController
       type: :delay,
       title: "Route Delay",
       body: "Route #{@route.name} is delayed by #{delay_minutes} minutes",
-      data: {
-
-      }
+      data: {}
     )
 
     head :ok

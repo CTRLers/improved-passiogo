@@ -1,7 +1,7 @@
 def send_test_notification(user_id)
   user = User.find(user_id)
-  
-  types = [:info, :delay, :announcement, :service_disruption]
+
+  types = [ :info, :delay, :announcement, :service_disruption ]
   type = types.sample
 
   notification_data = {
@@ -24,7 +24,7 @@ def send_test_notification(user_id)
   puts "Title: #{notification_data[:title]}"
   puts "Body: #{notification_data[:body]}"
   puts "Timestamp: #{notification_data[:data][:timestamp]}"
-  
+
   result
 end
 

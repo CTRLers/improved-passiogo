@@ -1,6 +1,6 @@
 class UserNotification < ApplicationRecord
   belongs_to :user
-  
+
   validates :notification_type, presence: true
   validates :title, presence: true
   validates :body, presence: true

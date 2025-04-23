@@ -25,7 +25,7 @@ class NotificationService
 
   def self.notify_route_delay(route, delay_minutes)
     users = User.subscribed_to_route(route.id)
-    
+
     notify(
       users,
       type: :delay,
@@ -40,7 +40,7 @@ class NotificationService
 
   def self.notify_announcement(title:, body:)
     users = User.subscribed_to_announcements
-    
+
     notify(
       users,
       type: :announcement,

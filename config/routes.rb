@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "routes#index"
 
   resources :routes, :stops, only: [ :index, :show ] do
-    post 'test_notification', on: :collection
+    post "test_notification", on: :collection
   end
   resources :stops, only: [ :index, :show ]
 
@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :notifications, only: [:index] do
+  resources :notifications, only: [ :index ] do
     post :mark_as_read, on: :member
     post :mark_as_unread, on: :member
     post :mark_all_as_read, on: :collection

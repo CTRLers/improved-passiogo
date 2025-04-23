@@ -4,14 +4,14 @@
 def test_notification(user_id = nil)
   # Find a user
   user = user_id ? User.find(user_id) : User.first
-  
+
   unless user
     puts "Error: No users found"
     return
   end
-  
+
   puts "Testing notification for user ##{user.id} (#{user.email})"
-  
+
   # Create a notification
   notification = user.user_notifications.create!(
     title: "Console Test",
@@ -19,9 +19,9 @@ def test_notification(user_id = nil)
     notification_type: :info,
     data: { test: true }
   )
-  
+
   puts "Created notification ##{notification.id}"
-  
+
   # Broadcast directly using ActionCable
   begin
     NotificationsChannel.broadcast_to(
@@ -34,13 +34,13 @@ def test_notification(user_id = nil)
         data: notification.data
       }
     )
-    
+
     puts "Broadcast sent via ActionCable"
     puts "Check your browser to see if the notification appears"
   rescue => e
     puts "Error broadcasting notification: #{e.message}"
   end
-  
+
   notification
 end
 

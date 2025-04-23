@@ -1,5 +1,5 @@
 module NotificationConsoleManager
-  NOTIFICATION_TYPES = [:info, :announcement, :delay, :service_disruption, :alert, :success]
+  NOTIFICATION_TYPES = [ :info, :announcement, :delay, :service_disruption, :alert, :success ]
 
   # Send a notification to a specific user
   def self.send_to_user(user_id, type: :info, title:, body:, data: {})
@@ -28,9 +28,9 @@ module NotificationConsoleManager
     recipient_type = prompt_options(
       "Select recipient type:",
       [
-        {value: :user, label: "Single user"},
-        {value: :users, label: "Multiple users"},
-        {value: :all, label: "All users"}
+        { value: :user, label: "Single user" },
+        { value: :users, label: "Multiple users" },
+        { value: :all, label: "All users" }
       ]
     )
 
@@ -39,16 +39,16 @@ module NotificationConsoleManager
     case recipient_type
     when :user
       user_id = prompt_input("Enter user ID:")
-      user_ids = [user_id.to_i]
+      user_ids = [ user_id.to_i ]
     when :users
       input = prompt_input("Enter user IDs (comma-separated):")
-      user_ids = input.split(',').map(&:strip).map(&:to_i)
+      user_ids = input.split(",").map(&:strip).map(&:to_i)
     end
 
     # Get notification type
     type = prompt_options(
       "Select notification type:",
-      NOTIFICATION_TYPES.map { |t| {value: t, label: t.to_s.titleize} }
+      NOTIFICATION_TYPES.map { |t| { value: t, label: t.to_s.titleize } }
     )
 
     # Get notification content
@@ -185,7 +185,7 @@ module NotificationConsoleManager
     if prompt_yes_no("Filter by notification type?")
       options[:type] = prompt_options(
         "Select notification type:",
-        NOTIFICATION_TYPES.map { |t| {value: t, label: t.to_s.titleize} }
+        NOTIFICATION_TYPES.map { |t| { value: t, label: t.to_s.titleize } }
       )
     end
 
@@ -194,8 +194,8 @@ module NotificationConsoleManager
       read_status = prompt_options(
         "Select read status:",
         [
-          {value: true, label: "Read"},
-          {value: false, label: "Unread"}
+          { value: true, label: "Read" },
+          { value: false, label: "Unread" }
         ]
       )
       options[:read] = read_status
@@ -240,7 +240,7 @@ module NotificationConsoleManager
 
     puts "\n📋 Notifications (#{notifications.count}):"
     puts "-" * 100
-    puts "| %-5s | %-15s | %-10s | %-20s | %-30s |" % ["ID", "User", "Type", "Created", "Title"]
+    puts "| %-5s | %-15s | %-10s | %-20s | %-30s |" % [ "ID", "User", "Type", "Created", "Title" ]
     puts "-" * 100
 
     notifications.each do |notification|
@@ -284,23 +284,23 @@ module NotificationConsoleManager
     # Offer actions for this notification
     actions = []
     if notification.read_at
-      actions << {value: :mark_unread, label: "Mark as unread"}
+      actions << { value: :mark_unread, label: "Mark as unread" }
     else
-      actions << {value: :mark_read, label: "Mark as read"}
+      actions << { value: :mark_read, label: "Mark as read" }
     end
-    actions << {value: :delete, label: "Delete notification"}
-    actions << {value: :cancel, label: "Cancel"}
+    actions << { value: :delete, label: "Delete notification" }
+    actions << { value: :cancel, label: "Cancel" }
 
     action = prompt_options("Select an action:", actions)
 
     case action
     when :mark_read
-      mark_as_read([notification.id])
+      mark_as_read([ notification.id ])
     when :mark_unread
-      mark_as_unread([notification.id])
+      mark_as_unread([ notification.id ])
     when :delete
       if prompt_yes_no("Are you sure you want to delete this notification?")
-        delete([notification.id])
+        delete([ notification.id ])
       end
     end
 
@@ -376,14 +376,14 @@ module NotificationConsoleManager
       action = prompt_options(
         "Select an action:",
         [
-          {value: :send, label: "Send a notification"},
-          {value: :find, label: "Find notifications"},
-          {value: :view, label: "View a specific notification"},
-          {value: :stats, label: "View notification statistics"},
-          {value: :mark_read, label: "Mark notifications as read"},
-          {value: :mark_unread, label: "Mark notifications as unread"},
-          {value: :delete, label: "Delete notifications"},
-          {value: :exit, label: "Exit"}
+          { value: :send, label: "Send a notification" },
+          { value: :find, label: "Find notifications" },
+          { value: :view, label: "View a specific notification" },
+          { value: :stats, label: "View notification statistics" },
+          { value: :mark_read, label: "Mark notifications as read" },
+          { value: :mark_unread, label: "Mark notifications as unread" },
+          { value: :delete, label: "Delete notifications" },
+          { value: :exit, label: "Exit" }
         ]
       )
 
@@ -403,13 +403,13 @@ module NotificationConsoleManager
           statistics
         end
       when :mark_read
-        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(',').map(&:strip).map(&:to_i)
+        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(",").map(&:strip).map(&:to_i)
         mark_as_read(ids_input)
       when :mark_unread
-        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(',').map(&:strip).map(&:to_i)
+        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(",").map(&:strip).map(&:to_i)
         mark_as_unread(ids_input)
       when :delete
-        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(',').map(&:strip).map(&:to_i)
+        ids_input = prompt_input("Enter notification IDs (comma-separated):").split(",").map(&:strip).map(&:to_i)
         if prompt_yes_no("Are you sure you want to delete #{ids_input.size} notification(s)?")
           delete(ids_input)
         end
@@ -434,7 +434,7 @@ module NotificationConsoleManager
   # Helper method to prompt for yes/no
   def self.prompt_yes_no(message)
     print "#{message} (y/n) "
-    gets.chomp.downcase == 'y'
+    gets.chomp.downcase == "y"
   end
 
   # Helper method to prompt for options
