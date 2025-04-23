@@ -39,16 +39,16 @@ export default class extends Controller {
     })
     console.log("loaded map")
     // place your marker at the very center
-    // new this.markerClass({
-    //   map:      this.map,
-    //   position: center,
-    //   title:    this.nameValue,
-    // })
-    const marker = new google.maps.marker.AdvancedMarkerElement({
+    const marker =new this.markerClass({
       map:      this.map,
       position: center,
       title:    this.nameValue,
-    });
+    })
+    // const marker = new google.maps.marker.AdvancedMarkerElement({
+    //   map:      this.map,
+    //   position: center,
+    //   title:    this.nameValue,
+    // });
 
 
 

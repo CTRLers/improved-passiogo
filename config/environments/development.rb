@@ -80,6 +80,9 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
+  config.web_console.permissions = '0.0.0.0/0'
+
+
   # Disable request forgery protection for WebSocket connections
   config.action_cable.disable_request_forgery_protection = true
 end
