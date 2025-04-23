@@ -2,11 +2,9 @@
 import "../assets/stylesheets/application.css"
 import "./controllers"
 
-// Import direct notification test
-import "./direct_notification_test"
-
-// Import direct banner test
-import "./direct_banner_test"
+// Direct notification and banner tests disabled
+// import "./direct_notification_test"
+// import "./direct_banner_test"
 
 // Import channels last to avoid blocking other functionality if it fails
 try {

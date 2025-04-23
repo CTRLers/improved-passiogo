@@ -54,7 +54,8 @@ class NotificationsController < ApplicationController
   # GET /notifications/test_page
   def test_page
     # Simple page to test notifications
-    render layout: false
+    # Use the application layout to include the navbar
+    render layout: "application"
   end
 
   private
