@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_034914) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_09_225343) do
   create_table "buses", force: :cascade do |t|
     t.string "bus_number", null: false
     t.integer "capacity", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_034914) do
     t.datetime "updated_at", null: false
     t.float "lat"
     t.float "long"
+    t.integer "current_stop_id"
     t.index ["name"], name: "index_routes_on_name", unique: true
   end
 
